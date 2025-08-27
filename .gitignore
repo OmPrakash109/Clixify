@@ -1,0 +1,49 @@
+# ==============================
+# Java / Spring Boot (Maven)
+# ==============================
+target/
+!.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.properties
+
+# Logs
+*.log
+
+# IDE / Editor files
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Spring Boot local configs (NEVER commit secrets)
+clixify-backend-sb/src/main/resources/application*.properties
+clixify-backend-sb/src/main/resources/application*.yml
+!clixify-backend-sb/src/main/resources/application-example.properties  # template only
+
+# ==============================
+# Node.js / React (Frontend)
+# ==============================
+node_modules/
+build/
+dist/
+.cache/
+*.cache
+*.tmp
+*.lock
+
+# Environment variables (local only)
+.env
+.env.*
+!.env.example     # template only
+
+# ==============================
+# Misc
+# ==============================
+*.bak
+*.swp
+*.swo
