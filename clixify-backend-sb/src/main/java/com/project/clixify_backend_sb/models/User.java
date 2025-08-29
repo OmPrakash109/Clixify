@@ -1,5 +1,10 @@
 package com.project.clixify_backend_sb.models;
 
+/*
+This is our custom version/representation of 'User' specific to our application's needs.
+And with the help of 'UserDetailsImpl' class, we convert our custom representation of user (of type 'User') to Spring Security compatible representation of user (of type 'UserDetailsImpl') so it can work with authentication and authorization of the User.
+*/
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +17,7 @@ import java.util.List;
 @Data                   //@Data is a lombok annotation which provides the getters and setters without having to declare it manually
 @NoArgsConstructor      //@NoArgsConstructor is a lombok annotation that provides default constructor without having to declare it manually
 @AllArgsConstructor     //@AllArgsConstructor is a lombok annotation that provides parameterized constructor without having to declare it manually
-public class User
+public class  User
 {
     @Id            //@Id annotation specifies the primary key of the table (to the filed just below it)
     @GeneratedValue(strategy = GenerationType.IDENTITY)     //GenerationType.IDENTITY of @GeneratedValue annotation tells spring to Auto-increment primary key id each time new row is added
