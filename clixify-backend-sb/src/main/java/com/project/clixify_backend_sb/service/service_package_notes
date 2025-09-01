@@ -1,0 +1,9 @@
+* UserDetailsImpl: We created the 'UserDetailsImpl' class (by implementing 'UserDetails' interface) to bridge the gap/integrate our own custom representation of User with the Spring Security-compatible representation of User,
+                   so that spring can understand what user to perform authentication and authorization on.
+
+
+* UserDetailsServiceImpl: used to load the user details from the database.
+                        - We created the 'UserDetailsServiceImpl' class (by implementing 'UserDetailsService interface) as we have our own custom representation of user and we might be storing it in any database like MySQL, MongoDB etc. depending on our requirement.
+                         so we created this so that Spring Security can understand how to load the user details from the database for our custom user representation.
+                         In our 'UserDetailsServiceImpl', We override the 'loadUserByUsername' method to load the user details from the database.
+                         This class helps to load user details from the database and convert it to UserDetailsImpl object (by UserDetailsImpl.build(user)).

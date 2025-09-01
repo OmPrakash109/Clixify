@@ -4,9 +4,22 @@
 target/
 !.mvn/wrapper/maven-wrapper.jar
 .mvn/wrapper/maven-wrapper.properties
+.mvn/timing.log
+.mvn/timing-report.*
+*.flattened-pom.xml
 
 # Logs
 *.log
+*.log.*
+logs/
+!**/src/main/**/logs/
+!**/src/test/**/logs/
+
+# Test reports
+**/surefire-reports/
+**/failsafe-reports/
+**/test-results/
+**/test-output/
 
 # IDE / Editor files
 .idea/
@@ -15,10 +28,33 @@ target/
 .project
 .settings/
 .vscode/
+.idea_modules/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
 # OS files
 .DS_Store
+.AppleDouble
+.LSOverride
+.Trashes
+.idea
+.vscode
+*.sublime-workspace
+*.sublime-project
+*.swp
+*~
+*.lock
+*.bak
+
+# Project Context (local only)
+PROJECT_CONTEXT.md
 Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
 
 # Spring Boot local configs (NEVER commit secrets)
 clixify-backend-sb/src/main/resources/application*.properties
@@ -36,14 +72,62 @@ dist/
 *.tmp
 *.lock
 
+# Dependencies
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# Testing
+coverage/
+__snapshots__/
+*.test.js.snap
+
+# Build files
+.eslintcache
+.stylelintcache
+
 # Environment variables (local only)
 .env
 .env.*
 !.env.example     # template only
 
 # ==============================
-# Misc
+# Database
 # ==============================
-*.bak
+*.db
+*.sql
+*.sqlite
+*.h2.db
+
+# ==============================
+# System Files
+# ==============================
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Mac
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+*~
+
+# ==============================
+# IDE specific files
+# ==============================
+.idea/
+*.iml
+*.ipr
+*.iws
 *.swp
-*.swo
+*~
+.~lock.*

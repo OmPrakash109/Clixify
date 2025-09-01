@@ -1,0 +1,24 @@
+'security' package stores all the classes related to Security like:
+
+* JwtUtils (service layer for JwtAuthenticationFilter) -> This class contains utility helper methods for:
+           - Generating a token with User details
+           - Extracting token from authentication header and also Extract username from JWT token (parsing the token)
+           - Validating the token
+
+* JwtAuthenticationFilter -> This class Filters the incoming request to check the validity of the token for each request (as it extends the OncePerRequestFilter class)
+    There are mainly 4 steps in this class:
+     //Step 1: Extract/get JWT Token From the Authorization Header of the incoming Request
+     //Step 2: If there is token, Validate the JWT Token
+     //Step 3: If token is Valid, extract/get username from it and load corresponding User Details from database using UserDetailsService.
+     //Step 4: Set the Authentication in the Security Context Holder (by getting object of 'UsernamePasswordAuthenticationToken' by passing the 'userDetails' and 'null' as credentials)
+     //Step 5: Continue the filter chain
+
+     - Step 1 to Step 4 lies inside try block, and Step 5 lies after try-catch block.
+     - Step 3 and Step 4 lies inside the Step 2.
+
+
+* JwtAuthenticationResponse -> This is a DTO(Data Transfer Object) class which represents the  JWT authentication response.
+                                - It defines the way in which the Authentication Response is displayed to the User.
+
+* SecurityConfig - This class sets up the Spring Security Filter Chain and permit and denies access based on paths and roles.
+                    - Any security rule we want to add, will be added in SecurityConfig
