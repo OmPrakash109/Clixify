@@ -1,4 +1,4 @@
-package com.project.clixify_backend_sb.security;
+package com.project.clixify_backend_sb.security.jwt;
 
 //This is a DTO(Data Transfer Object) class which represents the  JWT authentication response.
 

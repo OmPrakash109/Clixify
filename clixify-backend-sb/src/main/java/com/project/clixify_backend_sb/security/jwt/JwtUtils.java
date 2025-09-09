@@ -1,4 +1,4 @@
-package com.project.clixify_backend_sb.security;
+package com.project.clixify_backend_sb.security.jwt;
 
 //JwtUtils.java is a service layer for JwtAuthenticationFilter.java.
 
