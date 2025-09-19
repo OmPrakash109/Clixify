@@ -7,7 +7,7 @@ We created the 'UserDetailsServiceImpl' class (by implementing 'UserDetailsServi
                          This class helps to load user details from the database and convert it to UserDetailsImpl object (by UserDetailsImpl.build(user)).
 */
 
-import com.project.clixify_backend_sb.models.User;
+import com.project.clixify_backend_sb.model.User;
 import com.project.clixify_backend_sb.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -5,7 +5,7 @@ We create the UserDetailsImpl class (by implementing UserDetails interface) to b
 so that spring can understand what user to perform authentication and authorization on.
 */
 
-import com.project.clixify_backend_sb.models.User;
+import com.project.clixify_backend_sb.model.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

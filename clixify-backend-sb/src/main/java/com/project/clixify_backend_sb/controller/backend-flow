@@ -1,0 +1,15 @@
+After implementing, security part that we did through packages:
+            - models
+            - repository/UserRepository
+            - service/UserDetialsImpl
+            - service/UserDetialsServiceImpl
+            - security/jwt classes
+            - security/WebSecurityConfig
+
+We will work on 'register' endpoint which would allow user to register into our application.
+For this, we would be creating:
+        - set of controllers
+        - service which would handle request from controller and manage the authentication
+        - we also need user models that we have already configured
+
+For Controller, for methods like POST, we would be fetching data from frontend, and for capturing the data, we create DTOs

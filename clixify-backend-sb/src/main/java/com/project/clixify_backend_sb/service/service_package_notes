@@ -7,3 +7,16 @@
                          so we created this so that Spring Security can understand how to load the user details from the database for our custom user representation.
                          In our 'UserDetailsServiceImpl', We override the 'loadUserByUsername' method to load the user details from the database.
                          This class helps to load user details from the database and convert it to UserDetailsImpl object (by UserDetailsImpl.build(user)).
+
+
+
+--------------
+After completing WebSecurityConfig class, we are done with security configuration.
+Now, we will work on 'register' endpoint which would allow user to register into our application.
+For this, the service layer would be handling the request from controller and manage the authentication.
+So we created UserService class to handle the request from controller and manage the authentication.
+
+* UserService: used to handle the request from controller and manage the authentication.
+                - We created the 'UserService' class (by implementing 'UserDetailsService interface) as we have our own custom representation of user and we might be storing it in any database like MySQL, MongoDB etc. depending on our requirement.
+
+

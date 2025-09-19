@@ -46,6 +46,7 @@ public class WebSecurityConfig
         return authProvider;                                    //Return the object of type 'DaoAuthenticationProvider'.
     }
 
+    @Bean       //The @Bean annotation is essential for Spring to recognize and use your security configuration. Without it, Spring Security will use its default configuration, which includes CSRF protection.
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception
     {
         http.csrf(AbstractHttpConfigurer::disable)

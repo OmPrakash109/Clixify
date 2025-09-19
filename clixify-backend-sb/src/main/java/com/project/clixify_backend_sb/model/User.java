@@ -1,4 +1,4 @@
-package com.project.clixify_backend_sb.models;
+package com.project.clixify_backend_sb.model;
 
 /*
 This is our custom version/representation of 'User' specific to our application's needs.

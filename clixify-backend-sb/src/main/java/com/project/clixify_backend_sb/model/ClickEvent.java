@@ -1,4 +1,4 @@
-package com.project.clixify_backend_sb.models;
+package com.project.clixify_backend_sb.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -1,0 +1,33 @@
+DTO (Data Transfer Object) is a simple object used to transfer data between layers (e.g. Controller -> Service -> Repository) or between different applications.
+- Acts as a contract between client and server for API communication
+
+
+Why use a DTO package in Spring Boot?
+
+1. Separation of Concerns
+
+- Your entities (like User) represent how data is stored in the database.
+- Your DTOs (like RegisterRequest) represent how data is received/sent through APIs.
+- This separation avoids leaking database structure to the outside world.
+
+2. Security
+
+- For example, the User entity might have fields like id, passwordHash, roles.
+- You don’t want users to pass or see all these fields directly via API.
+- A RegisterRequest DTO only contains what you need from the client (username, email, password).
+
+3. Validation
+
+- You can put validation annotations (@NotNull, @Email, @Size) directly on DTO fields.
+- This ensures the request payload is validated before converting it into an entity.
+
+4. Flexibility
+
+- API contract (DTO) can evolve independently from DB schema (Entity).
+- You can have multiple DTOs (RegisterRequest, LoginRequest, UserResponse) for different endpoints, even if all map to the same User entity.
+
+Because of these reasons, we are using DTOs in our application and not using entities directly in our controllers.
+
+Here we have__________________
+
+1.  RegisterRequest        //DTO(Data Transfer Object) to define structure of the request for user registration.
