@@ -4,17 +4,26 @@ First we add the JWT authentication related classes in the 'security' package.
     - JwtAuthenticationResponse
 
 
-After implelenting the JWT authentication related classes, we need do Custom Security Configuration that we do in 'WebSecurityConfig' class.
+After implementing the JWT authentication related classes, we need do Custom Security Configuration that we do in 'WebSecurityConfig' class.
 
 
- In this WebSecurityConfig class:
-    - We sets up the Spring Security Filter Chain (by making a method filterChain() which returns 'SecurityFilterChain' object) wherein,
-        - We defines the security rules for handling HTTP requests based on paths and roles.
-        - Add the JWTAuthenticationFilter to be used as a filter in the filter chain.
-             As Spring Security recognizes JWTAuthenticationFilter as a filter that will only be executed once per request
-             But by default, Spring Security doesn't automatically include our custom filter (JwtAuthenticationFilter) in the filter chain unless we explicitly add it to the filter chain.
-             For this, we add JwtAuthenticationFilter @Bean in WebSecurityConfig class.
-        - We also configure DaoAuthenticationProvider which Sets up how authentication is handled by Spring Security.
-             And add the authenticationProvider @Bean (which returns 'DaoAuthenticationProvider' object) in the filterChain().
-             We also configure passwordEncoder() method (which returns 'PasswordEncoder' object) and add it to daoAuthenticationProvider @Bean (as we can't store password as it is, first we encode before storing in database, by using BcryptPasswordEncoder for hashing)
-             Along with passwordEncoder, we also inject userDetailsService() method (which returns 'UserDetailsServiceImpl' object) and add it to daoAuthenticationProvider @Bean, so that we can tell daoAuthenticationProvider that, hey! we load this user from database this way.
+In this WebSecurityConfig class:
+We define 4 @Bean methods: (@Bean methods define Spring-managed beans in the application context.)
+
+1. filterChain() @Bean : This method configures the Spring Security Filter Chain and returns 'SecurityFilterChain' object.
+2. authenticationProvider() @Bean : This method configures the authentication provider and returns 'DaoAuthenticationProvider' object.
+3. passwordEncoder() @Bean : This method configures the password encoder and returns 'PasswordEncoder' object.
+4. jwtAuthenticationFilter() @Bean : This method configures the JWT authentication filter and returns 'JwtAuthenticationFilter' object.
+
+We also inject UserDetailsServiceImpl object (by @AllArgsConstructor) to use it in authenticationProvider @Bean.
+
+- We sets up the Spring Security Filter Chain (by making a method filterChain() which returns 'SecurityFilterChain' object) wherein,
+    - We disable csrf and defines the security rules for handling HTTP requests based on paths and roles.
+    - Add the JWTAuthenticationFilter to be used as a filter in the filter chain.
+         As Spring Security recognizes JWTAuthenticationFilter as a filter that will only be executed once per request
+         But by default, Spring Security doesn't automatically include our custom filter (JwtAuthenticationFilter) in the filter chain unless we explicitly add it to the filter chain.
+         For this, we add JwtAuthenticationFilter @Bean in WebSecurityConfig class.
+    - We also Set the authentication provider before adding jwtAuthenticationFilter to the filter chain. so we configure DaoAuthenticationProvider which Sets up how authentication is handled by Spring Security.
+         And add the authenticationProvider @Bean (which returns 'DaoAuthenticationProvider' object) in the filterChain().
+        We also configure passwordEncoder() method (which returns 'PasswordEncoder' object) and add it to daoAuthenticationProvider @Bean (as we can't store password as it is, first we encode before storing in database, by using BcryptPasswordEncoder for hashing)
+         Along with passwordEncoder, we also inject userDetailsService() method (which returns 'UserDetailsServiceImpl' object) and add it to daoAuthenticationProvider @Bean, so that we can tell daoAuthenticationProvider that, hey! we load this user from database this way.

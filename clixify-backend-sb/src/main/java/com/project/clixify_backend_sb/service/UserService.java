@@ -3,7 +3,6 @@ package com.project.clixify_backend_sb.service;
 import com.project.clixify_backend_sb.repository.UserRepository;
 import com.project.clixify_backend_sb.model.User;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +12,7 @@ public class UserService
 {
     private PasswordEncoder passwordEncoder;    //password encoder to encode the password before saving it in the database.
     private UserRepository userRepository;      //user repository to save the user in the database.
-
+    //Whenever we inject dependencies, we keep the constructor private so that we can't create an object of this class from outside.
 
     public User registerUser(User user)
     {

@@ -10,5 +10,5 @@ public class RegisterRequest        //DTO(Data Transfer Object) to define struct
     private String email;
     private String username;
     private String password;
-    private Set<String> role;
+    private Set<String> role;       // As we are capturing multiple roles in the 'RegisterRequest' DTO, we are using 'Set' to store the roles.
 }

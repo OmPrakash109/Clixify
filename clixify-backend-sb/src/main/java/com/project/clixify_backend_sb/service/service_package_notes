@@ -17,6 +17,5 @@ For this, the service layer would be handling the request from controller and ma
 So we created UserService class to handle the request from controller and manage the authentication.
 
 * UserService: used to handle the request from controller and manage the authentication.
-                - We created the 'UserService' class (by implementing 'UserDetailsService interface) as we have our own custom representation of user and we might be storing it in any database like MySQL, MongoDB etc. depending on our requirement.
 
 

@@ -1,6 +1,26 @@
 DTO (Data Transfer Object) is a simple object used to transfer data between layers (e.g. Controller -> Service -> Repository) or between different applications.
 - Acts as a contract between client and server for API communication
 
+In the context of DTOs, a "contract" means a formal agreement or specification that defines:
+
+Structure: The exact fields and their data types that will be exchanged
+Rules: Validation rules and constraints for the data
+Versioning: How the data structure may evolve over time
+Documentation: Clear expectations for both client and server
+For example, in your RegisterRequest DTO, the contract specifies that when registering a user, the client must provide:
+
+A username (string)
+An email (string, must be valid email format)
+A password (string, with certain complexity requirements)
+This contract ensures that:
+
+Frontend developers know exactly what data to send
+Backend developers know exactly what data to expect
+Both sides can validate the data against the agreed structure
+Changes to the data structure are explicitly managed and documented
+If either side violates this contract (e.g., frontend sends invalid data or backend expects different fields), the API will fail with appropriate validation errors. This makes DTOs a crucial part of your API's design and documentation.
+
+
 
 Why use a DTO package in Spring Boot?
 

@@ -22,7 +22,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @AllArgsConstructor
 public class WebSecurityConfig
 {
-    @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
     @Bean
@@ -34,7 +33,7 @@ public class WebSecurityConfig
     @Bean
     public PasswordEncoder passwordEncoder()
     {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder();     //Bcrypt is a secure password hashing function designed to protect passwords by making them computationally expensive to crack.
     }
 
     @Bean
@@ -57,8 +56,20 @@ public class WebSecurityConfig
                         .anyRequest().authenticated()       //Allow authenticated requests from any other endpoint.
                 );
 
-        http.authenticationProvider(authenticationProvider());      //Set the authentication provider before building the filter chain.
+        http.authenticationProvider(authenticationProvider());      //Set the authentication provider before adding jwtAuthenticationFilter to the filter chain.
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);        //We are telling spring to add JwtAuthenticationFilter before UsernamePasswordAuthenticationFilter(which is filter for processing forms).
         return http.build();    //Return the object of type 'SecurityFilterChain'.
     }
 }
+
+
+/*
+Understanding Bcrypt and Why It Cannot Be Decoded ---
+Bcrypt is a secure password hashing function designed to protect passwords by making them computationally expensive to crack. It is based on the Blowfish cipher and incorporates features like salting and adaptive hashing to enhance security. However, it is important to note that bcrypt is a one-way hashing algorithm, meaning it is designed to be irreversible. This makes it impossible to "decode" a bcrypt hash back into the original password.
+
+Key Features of Bcrypt:-
+
+Salting: Bcrypt generates a unique random salt for each password, ensuring that even identical passwords produce different hashes. This protects against rainbow table attacks.
+Adaptive Hashing: The cost factor (number of salt rounds) can be adjusted to increase the computational effort required to hash a password, making it more resistant to brute-force attacks as hardware improves.
+Fixed-Length Output: Regardless of the input, bcrypt always produces a 60-character hash.
+*/

@@ -1,8 +1,8 @@
-After implementing, security part that we did through packages:
+After implementing security part that we did through packages:
             - models
             - repository/UserRepository
-            - service/UserDetialsImpl
-            - service/UserDetialsServiceImpl
+            - service/UserDetailsImpl
+            - service/UserDetailsServiceImpl
             - security/jwt classes
             - security/WebSecurityConfig
 
@@ -10,6 +10,8 @@ We will work on 'register' endpoint which would allow user to register into our 
 For this, we would be creating:
         - set of controllers
         - service which would handle request from controller and manage the authentication
-        - we also need user models that we have already configured
+        - we also need user models that we have already created
 
-For Controller, for methods like POST, we would be fetching data from frontend, and for capturing the data, we create DTOs
+For Controller, for methods like POST, we would be fetching data from frontend, and for capturing the data, we create DTOs.
+DTO(Data Transfer Object) is a simple object used to transfer data between layers (e.g. Controller -> Service -> Repository) or between different applications.
+We use DTO instead of using entity directly in our controller, because we don't want to expose our database structure to the outside world.
