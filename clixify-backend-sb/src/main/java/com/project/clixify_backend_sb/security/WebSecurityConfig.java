@@ -6,7 +6,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -24,18 +26,21 @@ public class WebSecurityConfig
 {
     private UserDetailsServiceImpl userDetailsService;
 
+    //Method to create a @Bean of type 'JwtAuthenticationFilter' which returns the object of type 'JwtAuthenticationFilter'.
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter()
     {
         return new JwtAuthenticationFilter();
     }
 
+    //Method to create a @Bean of type 'PasswordEncoder' which returns the object of type 'BCryptPasswordEncoder'. It is used to encode the password using bcrypt password hashing function.
     @Bean
     public PasswordEncoder passwordEncoder()
     {
-        return new BCryptPasswordEncoder();     //Bcrypt is a secure password hashing function designed to protect passwords by making them computationally expensive to crack.
+        return new BCryptPasswordEncoder();     //Bcrypt is a secure password hashing function designed to protect passwords by making them computationally expensive to crack. It is based on the Blowfish cipher and incorporates features like salting and adaptive hashing to enhance security. However, it is important to note that bcrypt is a one-way hashing algorithm, meaning it is designed to be irreversible. This makes it impossible to "decode" a bcrypt hash back into the original password.
     }
 
+    //Method to create a @Bean of type 'DaoAuthenticationProvider' which returns the object of type 'DaoAuthenticationProvider'.
     @Bean
     public DaoAuthenticationProvider authenticationProvider()   //Authentication provider is used to authenticate the user and for that we need to set the user details service and password encoder.
     {
@@ -59,6 +64,13 @@ public class WebSecurityConfig
         http.authenticationProvider(authenticationProvider());      //Set the authentication provider before adding jwtAuthenticationFilter to the filter chain.
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);        //We are telling spring to add JwtAuthenticationFilter before UsernamePasswordAuthenticationFilter(which is filter for processing forms).
         return http.build();    //Return the object of type 'SecurityFilterChain'.
+    }
+
+    //Method to create a @Bean of type 'AuthenticationManager' which returns the object of type 'AuthenticationManager'.
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception
+    {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 }
 

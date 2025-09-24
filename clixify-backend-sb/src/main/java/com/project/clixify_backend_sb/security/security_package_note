@@ -8,12 +8,13 @@ After implementing the JWT authentication related classes, we need do Custom Sec
 
 
 In this WebSecurityConfig class:
-We define 4 @Bean methods: (@Bean methods define Spring-managed beans in the application context.)
+We define 5 @Bean methods: (@Bean methods define Spring-managed beans in the application context.)
 
 1. filterChain() @Bean : This method configures the Spring Security Filter Chain and returns 'SecurityFilterChain' object.
 2. authenticationProvider() @Bean : This method configures the authentication provider and returns 'DaoAuthenticationProvider' object.
 3. passwordEncoder() @Bean : This method configures the password encoder and returns 'PasswordEncoder' object.
 4. jwtAuthenticationFilter() @Bean : This method configures the JWT authentication filter and returns 'JwtAuthenticationFilter' object.
+5. authenticationManager() @Bean : This method configures the authentication manager and returns 'AuthenticationManager' object.
 
 We also inject UserDetailsServiceImpl object (by @AllArgsConstructor) to use it in authenticationProvider @Bean.
 
@@ -27,3 +28,114 @@ We also inject UserDetailsServiceImpl object (by @AllArgsConstructor) to use it 
          And add the authenticationProvider @Bean (which returns 'DaoAuthenticationProvider' object) in the filterChain().
         We also configure passwordEncoder() method (which returns 'PasswordEncoder' object) and add it to daoAuthenticationProvider @Bean (as we can't store password as it is, first we encode before storing in database, by using BcryptPasswordEncoder for hashing)
          Along with passwordEncoder, we also inject userDetailsService() method (which returns 'UserDetailsServiceImpl' object) and add it to daoAuthenticationProvider @Bean, so that we can tell daoAuthenticationProvider that, hey! we load this user from database this way.
+
+- We also configure authenticationManager() method (which returns 'AuthenticationManager' object) and add it to filterChain @Bean, so that we can tell filterChain that, hey! we use this authenticationManager to authenticate the user.
+
+
+
+
+           -*-*-*-::::::::: Spring Security Authentication: AuthenticationManager vs DaoAuthenticationProvider :::::::::-*-*-*-
+
+Overview:
+In Spring Security, authentication is a two-part process involving both the AuthenticationManager and AuthenticationProvider (like DaoAuthenticationProvider). Here's a comprehensive explanation of how they work together:
+
+1. AuthenticationManager ----------
+
+Role: The main interface for authentication in Spring Security
+Purpose: Coordinates the authentication process by delegating authentication requests to one or more AuthenticationProviders
+
+Key Characteristics:
+- Acts as a facade for authentication
+- Doesn't perform authentication itself
+- Delegates to the appropriate AuthenticationProvider
+- Used by Spring Security's filter chain
+- Has one main method: authenticate(Authentication)
+
+2. DaoAuthenticationProvider ------------
+
+Role: An implementation of AuthenticationProvider
+Purpose: Specifically handles username/password authentication using a data access object (DAO)
+
+Key Characteristics:
+- Extends AbstractUserDetailsAuthenticationProvider
+- Uses UserDetailsServiceImpl to load user details
+- Handles password encoding/verification
+- Specifically designed for username/password authentication
+
+Key Differences: ------
+
+        Feature         |       AuthenticationManager       |       DaoAuthenticationProvider
+ -----------------------------------------------------------------------------------------------------------
+         Type           |            Interface              |        Implementation class
+    Responsibility      |    Coordinates authentication     |    Performs actual authentication
+        Usage           |        Entry point for auth       |      Specific auth implementation
+    Flexibility         |    Can use multiple providers     |    Handles only username/password
+    Dependencies        |              None                 | Requires UserDetailsService, PasswordEncoder
+ -------------------------------------------------------------------------------------------------------------
+
+The AuthenticationProvider Configuration:
+
+@Bean
+public DaoAuthenticationProvider authenticationProvider() {
+    DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+    authProvider.setUserDetailsService(userDetailsService);
+    authProvider.setPasswordEncoder(passwordEncoder());
+    return authProvider;
+}
+
+Complete Authentication Flow ------------------
+
+1. Request Arrival:
+    - A login request is received by your application
+    - The AuthenticationManager receives the authentication request
+
+2. Provider Selection:
+    - The AuthenticationManager identifies that this is a username/password authentication request
+    - It selects the DaoAuthenticationProvider to handle the authentication as it supports UsernamePasswordAuthenticationToken
+
+3. Authentication Process:
+    - DaoAuthenticationProvider takes over the authentication:
+        1. Uses the injected UserDetailsServiceImpl to load user details by username
+        2. Uses the configured PasswordEncoder to verify the provided password against the stored hash
+        3. Performs additional checks (account locked, expired, etc.)
+
+4. Result:
+    - If successful: Returns a fully authenticated 'Authentication' object
+    - If failed: Throws an AuthenticationException
+
+
+Why This Matters in Your Application -------------
+
+1. Customization Points:
+- You've configured a custom UserDetailsServiceImpl to load users from your database
+- You've set up BCrypt password hashing for secure password storage
+- You can add additional authentication checks if needed
+
+2. Integration:
+- This provider is automatically used by Spring Security for:
+    - Form logins
+    - HTTP Basic authentication
+    - Anywhere 'authenticationManager.authenticate()' is called.
+
+4. Extensibility:
+- You can add multiple authentication providers
+- Each can handle different types of authentication
+- The AuthenticationManager will delegate the authentication process to the appropriate one.
+
+
+In Practice ------
+When you call 'authenticationManager.authenticate()' in your 'UserService' class:
+
+// In UserService.authenticateUser()
+Authentication authentication = authenticationManager.authenticate(
+    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
+);
+
+**This triggers the entire chain, using your configured DaoAuthenticationProvider to handle the actual authentication while the AuthenticationManager coordinates the process.
+
+Summary ----------
+- AuthenticationManager: The coordinator that manages the authentication process
+- DaoAuthenticationProvider: The worker that handles username/password authentication
+- Your Configuration: Customizes how authentication works in your specific application
+
+This separation of concerns makes Spring Security both powerful and flexible, allowing you to customize the authentication process while relying on the framework to handle the complex security aspects.

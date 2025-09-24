@@ -25,7 +25,6 @@ public class UserDetailsImpl implements UserDetails
     private String email;
     private String username;
     private String password;
-
     private Collection<? extends GrantedAuthority> authorities;     //GrantedAuthority is about how roles are being managed in Spring Security (as to tellSpring Security about role of the user, it would need an object of type GrantedAuthority wherein we pass our custom role as parameter)
 
     public UserDetailsImpl(Long id, String email, String userName, String password, Collection<? extends GrantedAuthority> authorities) {

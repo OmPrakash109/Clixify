@@ -1,5 +1,6 @@
 package com.project.clixify_backend_sb.controller;
 
+import com.project.clixify_backend_sb.dtos.LoginRequest;
 import com.project.clixify_backend_sb.dtos.RegisterRequest;
 import com.project.clixify_backend_sb.model.User;
 import com.project.clixify_backend_sb.service.UserService;
@@ -30,5 +31,12 @@ public class AuthController
 
         userService.registerUser(user); //saving the user in the database through 'UserService' service layer which in turn calls 'UserRepository' repository layer to save the user in the database.
         return ResponseEntity.ok("User Registered Successfully.");
+    }
+
+    @PostMapping("/public/login")
+    public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest)
+    {
+        //we are calling the 'authenticateUser' method of 'UserService' service layer which handles the business logic for user login and returns the JWT token in the response.
+        return ResponseEntity.ok(userService.authenticateUser(loginRequest));
     }
 }
