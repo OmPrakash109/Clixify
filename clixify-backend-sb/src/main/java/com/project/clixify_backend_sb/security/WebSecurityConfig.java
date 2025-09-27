@@ -41,6 +41,7 @@ public class WebSecurityConfig
     }
 
     //Method to create a @Bean of type 'DaoAuthenticationProvider' which returns the object of type 'DaoAuthenticationProvider'.
+    //This DaoAuthenticationProvider is used by 'AuthenticationManager' to authenticate the user, which is the under the hood logic of authenticating the user in service/UserService class.
     @Bean
     public DaoAuthenticationProvider authenticationProvider()   //Authentication provider is used to authenticate the user and for that we need to set the user details service and password encoder.
     {
@@ -68,8 +69,8 @@ public class WebSecurityConfig
 
     //Method to create a @Bean of type 'AuthenticationManager' which returns the object of type 'AuthenticationManager'.
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception
-    {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception        //AuthenticationManager is used to authenticate the user and for that we need to set the authentication provider.
+    {                                                                                                                                   //don't forget to throw exception as it is a checked exception.
         return authenticationConfiguration.getAuthenticationManager();
     }
 }

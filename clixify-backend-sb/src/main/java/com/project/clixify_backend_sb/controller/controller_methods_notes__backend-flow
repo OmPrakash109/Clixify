@@ -1,0 +1,30 @@
+After implementing security part that we did through packages:
+            - models
+            - repository/UserRepository
+            - service/UserDetailsImpl
+            - service/UserDetailsServiceImpl
+            - security/jwt classes
+            - security/WebSecurityConfig
+
+Endpoints: ------------------------------------
+
+1. register
+
+We will work on 'register' endpoint which would allow user to register into our application.
+For this, we would be creating:
+        - controller method 'registerUser' which would handle the request from frontend (by using RegisterRequest DTO) for user registration and forward it to service layer with the help of UserService that we inject
+        - service method 'registerUser' which would handle request from controller and have the business logic for user registration
+        - In service method, we would be using repository method 'save' to save the user in database by injecting UserRepository interface
+
+
+For Controller, for methods like POST, we would be fetching data from frontend, and for capturing the data, we create DTOs.
+DTO(Data Transfer Object) is a simple object used to transfer data between layers (e.g. Controller -> Service -> Repository) or between different applications.
+We use DTO instead of using entity directly in our controller, because we don't want to expose our database structure to the outside world.
+
+
+2. login
+
+After implementing register endpoint, we will implement login endpoint which would allow user to login into our application using username and password, and after successful login, it would generate a token for the user that would be used for authentication in future requests.
+For this, we would be creating:
+        - controller method 'authenticateUser' which would handle the request from frontend (by using LoginRequest DTO) for user login and forward it to service layer with the help of UserService that we inject
+        - service method 'authenticateUser' which would handle request from controller and have the business logic for user login and generate a token for the user by using JwtUtils class and return the token as response

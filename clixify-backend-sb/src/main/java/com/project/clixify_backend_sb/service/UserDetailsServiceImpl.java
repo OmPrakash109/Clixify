@@ -28,3 +28,5 @@ public class UserDetailsServiceImpl implements UserDetailsService
         return UserDetailsImpl.build(user);     //after loading the user from the database, we convert it into UserDetailsImpl object (by UserDetailsImpl.build(user)) so that spring security can work with the user.
     }
 }
+
+//Spring security knows as how to authenticate the user for our application because it is aware of the 'UserDetailsServiceImpl' class and 'UserDetailsImpl' class that we created.

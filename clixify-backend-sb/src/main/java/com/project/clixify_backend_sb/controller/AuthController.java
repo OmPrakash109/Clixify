@@ -12,12 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/auth")        //we have permitted the requests form this endpoint without having to be authenticated as it will have public pages like register, login, forgot password endpoints so it has to be public so that people can come and register or login (we configured this in security/WebSecurityConfig)
+@RequestMapping("/api/auth")        //we have permitted the requests from this endpoint without them having to be authenticated as it will have public pages like register, login, forgot password endpoints so it has to be public so that people can come and register or login (we configured this in security/WebSecurityConfig)
 @AllArgsConstructor         //In modern Spring, we don't need to use @Autowired annotation to inject dependencies, we can use @AllArgsConstructor annotation to inject dependencies.
 public class AuthController
 {
     private UserService userService;    //Dependency injection of 'UserService' service layer which handles the business logic of user registration.
 
+    //Controller method for user registration
     @PostMapping("/public/register")
     public ResponseEntity<?> registerUser(@RequestBody RegisterRequest registerRequest)
     {
@@ -33,10 +34,11 @@ public class AuthController
         return ResponseEntity.ok("User Registered Successfully.");
     }
 
+    //Controller method for user login
     @PostMapping("/public/login")
     public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest)
     {
-        //we are calling the 'authenticateUser' method of 'UserService' service layer which handles the business logic for user login and returns the JWT token in the response.
+        //we are calling the 'authenticateUser' method of 'UserService' service layer which handles the business logic for user login and authentication, and returns the JWT token in the response.
         return ResponseEntity.ok(userService.authenticateUser(loginRequest));
     }
 }

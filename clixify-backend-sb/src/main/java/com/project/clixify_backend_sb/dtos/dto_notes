@@ -51,3 +51,4 @@ Because of these reasons, we are using DTOs in our application and not using ent
 Here we have__________________
 
 1.  RegisterRequest        //DTO(Data Transfer Object) to define structure of the request for user registration.
+2.  LoginRequest           //DTO(Data Transfer Object) to define structure of the request for user login.
