@@ -12,32 +12,35 @@ Clixify/
 │   │       │   │   ├── AuthController.java     # Authentication endpoints
 │   │       │   │   └── backend-flow            # Backend flow documentation
 │   │       │   
+│   │       │   ├── docs/                       # Documentation
+│   │       │   │   ├── authentication/         # Authentication documentation
+│   │       │   │   │   └── jwt_secret_issue.md # JWT configuration guide
+│   │       │   │   └── database/               # Database documentation
+│   │       │   │       └── Duplicate_User_Fix.md # Resolution for duplicate users
+│   │       │   
 │   │       │   ├── dtos/                       # Data Transfer Objects
-│   │       │   │   ├── RegisterRequest.java    # Registration request DTO
-│   │       │   │   └── dto_notes               # Notes about DTOs
+│   │       │   │   ├── LoginRequest.java       # Login request DTO
+│   │       │   │   └── RegisterRequest.java    # Registration request DTO
 │   │       │   
 │   │       │   ├── model/                      # JPA Entities
 │   │       │   │   ├── ClickEvent.java         # Tracks URL click events
 │   │       │   │   ├── URLMapping.java         # Maps short URLs to long URLs
-│   │       │   │   └── User.java               # User entity
+│   │       │   │   └── User.java               # User entity with unique username
 │   │       │   
 │   │       │   ├── repository/                 # Data Access Layer
 │   │       │   │   └── UserRepository.java     # User repository interface
 │   │       │   
 │   │       │   ├── security/                   # Security configurations
 │   │       │   │   ├── WebSecurityConfig.java  # Main security configuration
-│   │       │   │   ├── security_package_note   # Notes about security package
 │   │       │   │   └── jwt/                    # JWT related classes
 │   │       │   │       ├── JwtAuthenticationFilter.java  # JWT authentication filter
 │   │       │   │       ├── JwtUtils.java                 # JWT utilities
-│   │       │   │       ├── JwtAuthenticationResponse.java # JWT response DTO
-│   │       │   │       └── security_jwt_note             # JWT related notes
+│   │       │   │       └── JwtAuthenticationResponse.java # JWT response DTO
 │   │       │   
 │   │       │   └── service/                    # Business logic layer
 │   │       │       ├── UserService.java        # User service implementation
 │   │       │       ├── UserDetailsImpl.java    # Custom UserDetails implementation
-│   │       │       ├── UserDetailsServiceImpl.java # UserDetailsService implementation
-│   │       │       └── service_package_notes   # Notes about service package
+│   │       │       └── UserDetailsServiceImpl.java # UserDetailsService implementation
 │   │       │
 │   │       └── resources/
 │   │           └── application.properties      # Application properties
