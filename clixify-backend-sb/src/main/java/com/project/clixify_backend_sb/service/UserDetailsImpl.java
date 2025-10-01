@@ -41,7 +41,7 @@ public class UserDetailsImpl implements UserDetails
      {
          GrantedAuthority authority = new SimpleGrantedAuthority(user.getRole());   //extracts the role from the 'user' object and converts it into GrantedAuthority as Spring Security needs an object of GrantedAuthority to know the role of the user.
          return new UserDetailsImpl(    //returning the object of UserDetailsImpl
-                 user.getUser_id(),
+                 user.getUserId(),
                  user.getEmail(),
                  user.getUsername(),
                  user.getPassword(),

@@ -17,11 +17,11 @@ public class ClickEvent
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long clickEvent_id;
+    private Long clickEventId;
     private LocalDateTime clickDate;
 
     @ManyToOne      //@ManyToOne as many Click events can be associated with 1 URL Mapping.
-    @JoinColumn(name = "uMap_id")
-    private URLMapping urlMapping;      //as @ManyToOne so each Click Event will be associated with 1 URL Mapping.
+    @JoinColumn(name = "uMapId")
+    private UrlMapping urlMapping;      //as @ManyToOne so each Click Event will be associated with 1 URL Mapping.
 
 }

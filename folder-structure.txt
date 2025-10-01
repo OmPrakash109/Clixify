@@ -10,40 +10,52 @@ Clixify/
 │   │       │   
 │   │       │   ├── controller/                 # REST Controllers
 │   │       │   │   ├── AuthController.java     # Authentication endpoints
-│   │       │   │   └── backend-flow            # Backend flow documentation
-│   │       │   
-│   │       │   ├── docs/                       # Documentation
-│   │       │   │   ├── authentication/         # Authentication documentation
-│   │       │   │   │   └── jwt_secret_issue.md # JWT configuration guide
-│   │       │   │   └── database/               # Database documentation
-│   │       │   │       └── Duplicate_User_Fix.md # Resolution for duplicate users
+│   │       │   │   ├── UrlMappingController.java # URL shortening endpoints
+│   │       │   │   └── controller_methods_notes__backend-flow
 │   │       │   
 │   │       │   ├── dtos/                       # Data Transfer Objects
 │   │       │   │   ├── LoginRequest.java       # Login request DTO
-│   │       │   │   └── RegisterRequest.java    # Registration request DTO
+│   │       │   │   ├── RegisterRequest.java    # Registration request DTO
+│   │       │   │   ├── UrlMappingDTO.java      # URL mapping DTO
+│   │       │   │   └── dto_notes
+│   │       │   
+│   │       │   ├── fixes/                      # Documentation and fixes
+│   │       │   │   ├── authentication/         # Authentication related fixes
+│   │       │   │   │   └── jwt_secret_issue.md # JWT configuration issues and solutions
+│   │       │   │   └── database/               # Database related fixes
+│   │       │   │       └── Duplicate_User_Fix.md # Resolution for duplicate user issues
 │   │       │   
 │   │       │   ├── model/                      # JPA Entities
 │   │       │   │   ├── ClickEvent.java         # Tracks URL click events
-│   │       │   │   ├── URLMapping.java         # Maps short URLs to long URLs
-│   │       │   │   └── User.java               # User entity with unique username
+│   │       │   │   ├── UrlMapping.java         # Maps short URLs to long URLs
+│   │       │   │   ├── User.java               # User entity
+│   │       │   │   └── modelOrEntity_notes
 │   │       │   
 │   │       │   ├── repository/                 # Data Access Layer
-│   │       │   │   └── UserRepository.java     # User repository interface
+│   │       │   │   ├── UrlMappingRepository.java # URL mapping repository
+│   │       │   │   ├── UserRepository.java     # User repository
+│   │       │   │   └── repository_notes
 │   │       │   
 │   │       │   ├── security/                   # Security configurations
-│   │       │   │   ├── WebSecurityConfig.java  # Main security configuration
+│   │       │   │   ├── WebSecurityConfig.java  # Security configuration
+│   │       │   │   ├── Authentication_Authorization_Guide.md
+│   │       │   │   ├── security_package_note
 │   │       │   │   └── jwt/                    # JWT related classes
-│   │       │   │       ├── JwtAuthenticationFilter.java  # JWT authentication filter
-│   │       │   │       ├── JwtUtils.java                 # JWT utilities
-│   │       │   │       └── JwtAuthenticationResponse.java # JWT response DTO
+│   │       │   │       ├── JwtAuthenticationFilter.java
+│   │       │   │       ├── JwtAuthenticationResponse.java
+│   │       │   │       ├── JwtUtils.java
+│   │       │   │       └── security_jwt_note
 │   │       │   
-│   │       │   └── service/                    # Business logic layer
-│   │       │       ├── UserService.java        # User service implementation
-│   │       │       ├── UserDetailsImpl.java    # Custom UserDetails implementation
-│   │       │       └── UserDetailsServiceImpl.java # UserDetailsService implementation
+│   │       │   └── service/                    # Business logic
+│   │       │       ├── UrlMappingService.java  # URL mapping service
+│   │       │       ├── UserDetailsImpl.java    # Custom UserDetails
+│   │       │       ├── UserDetailsServiceImpl.java # UserDetailsService impl
+│   │       │       ├── UserService.java        # User service
+│   │       │       └── service_package_notes
 │   │       │
 │   │       └── resources/
-│   │           └── application.properties      # Application properties
-│   └── pom.xml                                 # Maven configuration
+│   │           └── application.properties
+│   └── pom.xml
+│
 └── clixify-frontend-react/                     # (Frontend - to be implemented)
     └── (Frontend files will go here)

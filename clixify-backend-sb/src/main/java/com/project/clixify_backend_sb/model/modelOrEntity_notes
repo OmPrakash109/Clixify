@@ -1,0 +1,56 @@
+Models/Entities Documentation
+============================
+
+1. User
+- Purpose: Represents a user account in the system
+- Key Fields:
+  - id: Unique identifier (auto-generated)
+  - username: Unique username for login
+  - email: User's email address
+  - password: Encrypted password (using BCrypt)
+  - roles: Set of user roles/authorities
+- Relationships:
+  - OneToMany with UrlMapping (user can have multiple URL mappings)
+- Usage: Used for authentication, authorization, and tracking URL ownership
+
+2. UrlMapping
+- Purpose: Maps original URLs to shortened URLs
+- Key Fields:
+  - id: Unique identifier (auto-generated)
+  - originalUrl: The original long URL
+  - shortUrl: The generated short URL
+  - creationDate: When the mapping was created
+  - expirationDate: When the mapping expires (if applicable)
+- Relationships:
+  - ManyToOne with User (mapping belongs to a user)
+  - OneToMany with ClickEvent (tracks clicks on the short URL)
+- Usage: Core entity for URL shortening functionality
+
+3. ClickEvent
+- Purpose: Tracks each click on a shortened URL
+- Key Fields:
+  - id: Unique identifier (auto-generated)
+  - clickTime: Timestamp of the click
+  - ipAddress: IP address of the requester
+  - userAgent: Browser/device information
+  - referrer: The referring URL (if any)
+- Relationships:
+  - ManyToOne with UrlMapping (each click is associated with a URL mapping)
+- Usage: Analytics and tracking for URL clicks
+
+Common Annotations Used:
+- @Entity: Marks class as a JPA entity
+- @Table: Specifies the database table name
+- @Id: Marks the primary key
+- @GeneratedValue: Configures auto-increment for primary key
+- @Column: Maps field to database column
+- @ManyToOne/@OneToMany: Defines entity relationships
+- @CreationTimestamp: Automatically sets creation timestamp
+- @UpdateTimestamp: Automatically updates modification timestamp
+
+Best Practices:
+1. Always use wrapper classes (e.g., Long instead of long) for entity IDs
+2. Implement equals() and hashCode() methods
+3. Use @JsonIgnore on sensitive fields
+4. Add proper validation constraints
+5. Consider using @PrePersist and @PreUpdate for business logic

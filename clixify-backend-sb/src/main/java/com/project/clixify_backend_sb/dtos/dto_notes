@@ -50,5 +50,23 @@ Because of these reasons, we are using DTOs in our application and not using ent
 
 Here we have__________________
 
-1.  RegisterRequest        //DTO(Data Transfer Object) to define structure of the request for user registration.
-2.  LoginRequest           //DTO(Data Transfer Object) to define structure of the request for user login.
+1. RegisterRequest
+   - Used in: User registration endpoint (`/api/auth/register`)
+   - Purpose: Defines the required fields for new user registration
+   - Fields: username, email, password, roles
+   - Validations: Ensures proper email format, password strength, and required fields
+   - Security: Never exposes sensitive data, used only for registration input
+
+2. LoginRequest
+   - Used in: User authentication endpoint (`/api/auth/login`)
+   - Purpose: Handles user login credentials
+   - Fields: username, password
+   - Validations: Basic field validations before authentication
+   - Security: Transient data used only for authentication
+
+3. UrlMappingDTO
+   - Used in: URL shortening endpoints (`/api/urls/shorten`)
+   - Purpose: Represents the response after URL shortening
+   - Fields: originalUrl, shortUrl, creationDate, user (basic info)
+   - Usage: Returned after successful URL shortening, contains both original and generated short URL
+   - Security: Only includes non-sensitive, necessary URL information

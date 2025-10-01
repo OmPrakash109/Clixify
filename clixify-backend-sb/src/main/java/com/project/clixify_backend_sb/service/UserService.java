@@ -11,6 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -49,5 +50,13 @@ public class UserService
         String jwt = jwtUtils.generateToken(userDetails);
         // 5. Return the JWT token in the response wrapped in 'JwtAuthenticationResponse' object.
         return new JwtAuthenticationResponse(jwt);
+    }
+    //Business logic for finding user/retrieving user details by username (to get the user details from the principal object) while generating the short URL
+    //As every short URL in the database is mapped to a user so we need to get the user details from the principal object to map the short URL to that user.
+    public User findByUsername(String name)
+    {
+        return userRepository.findByUsername(name).orElseThrow(             //retrieves the user details with the help of userRepository and throws an exception if the user is not found
+                () -> new UsernameNotFoundException("User not found with username: " + name)
+        );
     }
 }

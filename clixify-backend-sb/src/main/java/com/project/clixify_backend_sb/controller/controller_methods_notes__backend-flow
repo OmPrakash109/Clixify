@@ -28,3 +28,15 @@ After implementing register endpoint, we will implement login endpoint which wou
 For this, we would be creating:
         - controller method 'authenticateUser' which would handle the request from frontend (by using LoginRequest DTO) for user login and forward it to service layer with the help of UserService that we inject
         - service method 'authenticateUser' which would handle request from controller and have the business logic for user login and generate a token for the user by using JwtUtils class and return the token as response
+
+
+3. generate short URL
+
+After implementing login endpoint, we will implement generate short URL endpoint which would allow user to generate a short URL for their original URL.
+For this, we would be creating:
+        - controller method 'createShortUrl' in `UrlMappingController` which would handle the POST request from frontend (by using Map<String, String> for request body) for generating short URL and forward it to service layer with the help of UrlMappingService that we inject
+        - service method 'createShortUrl' in `UrlMappingService` which would handle request from controller and have the business logic for generating short URL and return the `UrlMappingDTO` as response
+        - In service method, we would be using repository method 'save' to save the short URL in database by injecting UrlMappingRepository interface
+
+
+

@@ -21,13 +21,13 @@ public class  User
 {
     @Id            //@Id annotation specifies the primary key of the table (to the filed just below it)
     @GeneratedValue(strategy = GenerationType.IDENTITY)     //GenerationType.IDENTITY of @GeneratedValue annotation tells spring to Auto-increment primary key id each time new row is added
-    private Long user_id;
+    private Long userId;
     private String email;
     private String username;
     private String password;
     private String role = "ROLE_USER";
 
     @OneToMany              //@OneToMany annotation as 1 user can have multiple URL mappings. AND
-    @JoinColumn(name = "uMap_id")       //@JoinColumn annotation is used to specify the foreign key column name in the current table
-    private List<URLMapping> urlMappings;       //as @OneToMany means 1 user will have List of URL mappings.
+    @JoinColumn(name = "uMapId")       //@JoinColumn annotation is used to specify the foreign key column name in the current table
+    private List<UrlMapping> urlMappings;       //as @OneToMany means 1 user will have List of URL mappings.
 }
