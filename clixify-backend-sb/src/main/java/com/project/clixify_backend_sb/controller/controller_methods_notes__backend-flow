@@ -48,3 +48,40 @@ For this, we would be creating:
 
 
 
+
+Now that we have implemented endpoints for user registration, login, URL shortening, and URL retrieval, we will work on 'Analytics' part where we would implement 2 endpoints which would allow user to get analytics of their URLs.
+
+1. First Endpoint:
+
+GET /analytics/abc123?startDate=2024-12-01T00:00:00&endDate=2024-12-15-07T23:59:59
+
+In above line: /analytics = endpoint and abc123 = shortUrl
+This helps to get the analytics (click count by date) for a particular short URL by date, within a particular date range(that we pass as parameter)
+[
+    {
+        "clickData": "2024-12-01",
+        "count": 10
+    },
+    {
+        "clickDate": "2024-12-02",
+        "count": 20
+    }
+]
+
+
+2. Second Endpoint
+
+GET /totalclicks?startDate=2024-12-01&endDate=2024-12-15
+
+{
+    "2024-12-01": 15,
+    "2024-12-02": 20
+}
+
+In above line: /totalclicks = endpoint
+
+This gives total clicks of all the URLs that user owns or has created(thats why we did not pass any specific URL), within a particular date range.(that we pass as parameter)
+
+
+
+

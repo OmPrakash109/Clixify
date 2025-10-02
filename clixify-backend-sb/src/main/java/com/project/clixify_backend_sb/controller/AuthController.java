@@ -19,7 +19,7 @@ public class AuthController
     private UserService userService;    //Dependency injection of 'UserService' service layer which handles the business logic of user registration.
 
     //Controller method for user registration
-    @PostMapping("/public/register")
+    @PostMapping("/public/register")        //It is a public registration endpoint
     public ResponseEntity<?> registerUser(@RequestBody RegisterRequest registerRequest)
     {
         //we are creating a new 'user' object which is of type 'User'(which is an Entity )and setting the values from the 'registerRequest' object which is a DTO (Data Transfer Object) of type 'RegisterRequest'
@@ -35,7 +35,7 @@ public class AuthController
     }
 
     //Controller method for user login
-    @PostMapping("/public/login")
+    @PostMapping("/public/login")           //It is a public login endpoint
     public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest)
     {
         //we are calling the 'authenticateUser' method of 'UserService' service layer which handles the business logic for user login and authentication, and returns the JWT token in the response.

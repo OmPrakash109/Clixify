@@ -1,8 +1,10 @@
 package com.project.clixify_backend_sb.service;
 
+import com.project.clixify_backend_sb.dtos.ClickEventDTO;
 import com.project.clixify_backend_sb.dtos.UrlMappingDTO;
 import com.project.clixify_backend_sb.model.UrlMapping;
 import com.project.clixify_backend_sb.model.User;
+import com.project.clixify_backend_sb.repository.ClickEventRepository;
 import com.project.clixify_backend_sb.repository.UrlMappingRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,12 +12,14 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service        //Marking the class with the @Service annotation to indicate that it is a Spring Managed Service.
 @AllArgsConstructor     //Marking the class with the @AllArgsConstructor annotation to generate a constructor with all the required fields, which here, we are mainly using for dependency injection of 'UrlMappingRepository'.
 public class UrlMappingService
 {
     private UrlMappingRepository urlMappingRepository;      //Injecting the 'UrlMappingRepository' dependency into the 'UrlMappingService' class to perform database operations of 'UrlMapping' entity.
+    private ClickEventRepository clickEventRepository;      //Injecting the 'ClickEventRepository' dependency into the 'UrlMappingService' class to perform database operations of 'ClickEvent' entity.
 
     //Business logic for generating short URL
     public UrlMappingDTO createShortUrl(String originalUrl, User user)
@@ -74,5 +78,31 @@ public class UrlMappingService
         return urlMappingRepository.findByUser(user).stream()   //findByUser(user) method of urlMappindRepository returns a list of UrlMapping objects associated with the user, but we want to return a list of UrlMappingDTO objects associated with the user,
                 .map(this::convertToDto)        //so we use stream() to convert it to a stream and then use map() to convert each UrlMapping object to UrlMappingDTO object
                 .toList();          //and finally we use toList() to convert the stream to a list and return it
+    }
+
+    //Business logic for getting the analytics of the URL mapped/associated with the user(principal) who made the request(called in getUrlAnalytics method), and return List of ClickEventDTO object in response.
+    //In this method we write the business logic wherein we'll be involving Repository and with the help of repository, we are going to get the list of ClickEvent objects, and then we'll be converting it to list of ClickEventDTO objects and return it to the controller.
+    public List<ClickEventDTO> getClickEventByDate(String shortUrl, LocalDateTime start, LocalDateTime end)
+    {
+        //First we need UrlMapping object associated with the shortUrl to get the list of ClickEvent objects associated with the UrlMapping object
+        UrlMapping urlMapping = urlMappingRepository.findByShortUrl(shortUrl);
+
+        if(urlMapping != null)
+        {
+            //First we need to get the list of ClickEvent objects associated with the UrlMapping object
+            //And then we need to group the ClickEvent objects by date and count the number of clicks on each date
+            //And finally we need to convert the list of ClickEvent objects to list of ClickEventDTO objects
+            return clickEventRepository.findByUrlMappingAndClickDateBetween(urlMapping, start, end).stream()           //findByUrlMappingAndClickDateBetween method of clickEventRepository returns a list of ClickEvent objects associated with the UrlMapping object
+                    .collect(Collectors.groupingBy(click -> click.getClickDate().toLocalDate(), Collectors.counting()))         //collect(Collectors.groupingBy(click -> click.getClickDate().toLocalDate(), Collectors.counting())) groups the ClickEvent objects by date and counts the number of clicks on each date
+                    .entrySet().stream()                        //entrySet() returns a set of all the entries in the map
+                    .map(entry -> {             //map() is used to convert each entry in the map to a ClickEventDTO object
+                       ClickEventDTO clickEventDTO = new ClickEventDTO();               //Instantiating the 'ClickEventDTO' object to fill it with 'ClickEvent' object details
+                       clickEventDTO.setClickDate(entry.getKey());                  //setClickDate() method of ClickEventDTO object is used to set the clickDate of the ClickEventDTO object
+                       clickEventDTO.setCount(entry.getValue());                //setCount() method of ClickEventDTO object is used to set the count of the ClickEventDTO object
+                       return clickEventDTO;                        //returning the 'ClickEventDTO' object after converting the 'ClickEvent' object to 'ClickEventDTO' object
+                    })
+                    .collect(Collectors.toList());              //collect(Collectors.toList()) collects the ClickEventDTO objects into a list
+        }
+        return null;        //If no UrlMapping object is found associated with the shortUrl, then return null
     }
 }

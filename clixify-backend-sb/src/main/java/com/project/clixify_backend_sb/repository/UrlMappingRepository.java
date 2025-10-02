@@ -9,9 +9,10 @@ import java.util.List;
 
 //We are creating a custom repository interface for UrlMapping entity to perform database operations.
 @Repository          //Marking the interface with the @Repository annotation to indicate that it is a Spring Managed Repository.
-public interface UrlMappingRepository extends JpaRepository<UrlMapping, Long>   //Extending JpaRepository interface to perform database operations.
+public interface UrlMappingRepository extends JpaRepository<UrlMapping, Long>   //Extending JpaRepository interface to perform database operations. And as this Repository interface for UrlMapping entity, it will perform database operations for UrlMapping entity.
 {
-    UrlMapping findByShortUrl(String shortUrl);     //To fetch the UserMapping object from database with the help of their short URL as there will be scenarios wherein we would want to search a record based on short URL.
+    //METHOD NAME CONVENTION: findBy + Field Name
+    UrlMapping findByShortUrl(String shortUrl);     //To fetch the UserMapping object from database with the help of their short URL. This is used in the getClickEventByDate method of UrlMappingService to get the list of ClickEvent objects associated with the UrlMapping object.
     List<UrlMapping> findByUser(User usr);      //To get the all the URL mappings of a particular user from the database.
     //JPA will take care of the rest and will generate the query to fetch the record from the database.
 }

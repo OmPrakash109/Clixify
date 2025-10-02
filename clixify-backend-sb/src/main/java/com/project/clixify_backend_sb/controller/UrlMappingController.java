@@ -1,5 +1,6 @@
 package com.project.clixify_backend_sb.controller;
 
+import com.project.clixify_backend_sb.dtos.ClickEventDTO;
 import com.project.clixify_backend_sb.dtos.UrlMappingDTO;
 import com.project.clixify_backend_sb.model.UrlMapping;
 import com.project.clixify_backend_sb.model.User;
@@ -11,6 +12,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +30,7 @@ public class UrlMappingController
     // https://xyz.com/WXZfkst5 --> https://spring_boot.com     - short URL --> original URL
 
     //Controller method with @PostMapping annotation, to handle the POST requests at '/api/urls/shorten' endpoint, for shortening the passed URL, and return UrlMappingDTO object in response.
-    @PostMapping("/shorten")
+    @PostMapping("/shorten")        //It is a URL shortening endpoint
     @PreAuthorize("hasRole('USER')")   //This Controller method is an authenticated method so it requires authentication, and we cannot access this endpoint without authentication
     public ResponseEntity<UrlMappingDTO> createShortUrl(@RequestBody Map<String, String> request, Principal principal)  // the Map Stores the key-value pairs from the @RequestBody and Principal stores the user details, and we pass it to the service layer (UrlMappingService) to generate the short URL
     {                                                                                                                   //When the request is authenticated, principle is auto-injected
@@ -40,7 +43,7 @@ public class UrlMappingController
     }
 
     //Controller method with @GetMapping annotation, to handle the GET requests at '/api/urls/myurls' endpoint, for getting all the URLs mapped/associated with the user(principal) who made the request, and return List of UrlMappingDTO object in response.
-    @GetMapping("/myurls")
+    @GetMapping("/myurls")      //It is a URL retrieval endpoint
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<List<UrlMappingDTO>> getUserUrls(Principal principal)
     {
@@ -48,4 +51,20 @@ public class UrlMappingController
         List<UrlMappingDTO> urls = urlMappingService.getUrlsByUser(user);       //Then we will get all the URLs mapped/associated with the user(principal) who made the request, with the help of urlMappingService's getUrlsByUser method, and return List of UrlMappingDTO object in response.
         return ResponseEntity.ok(urls);         //Returning the List of UrlMappingDTO object to the client which is then converted to JSON and sent to the client
     }
+
+    //Controller method with @GetMapping annotation, to handle the GET requests at '/api/urls/analytics/{shortUrl}' endpoint, for getting the analytics of the URL mapped/associated with the user(principal) who made the request, and return List of ClickEventDTO object in response.
+    @GetMapping("/analytics/{shortUrl}")    //It is a URL analytics endpoint
+    @PreAuthorize("hasRole('USER')")    //shortUrl is passed as part of the URL
+    public ResponseEntity<List<ClickEventDTO>> getUrlAnalytics(@PathVariable String shortUrl,
+                                                         @RequestParam("startDate") String startDate,
+                                                         @RequestParam("endDate") String endDate)
+    {
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;    //Creating a DateTimeFormatter object to parse the date and time. ISO_LOCAL_DATE_TIME is a pre-defined pattern for parsing date and time in the format of 'yyyy-MM-ddTHH:mm:ss' like 2024-01-01T00:00:00, this 2024-12-01T00:00:00 we get from the request parameters @RequestParam "startDate" and "endDate".
+        LocalDateTime start = LocalDateTime.parse(startDate, formatter);    //Parsing the start date and time into LocalDateTime object format for the start date and time.
+        LocalDateTime end = LocalDateTime.parse(endDate, formatter);        //Parsing the end date and time into LocalDateTime object format for the end date and time.
+        List<ClickEventDTO> clickEventDTOS =urlMappingService.getClickEventByDate(shortUrl, start, end);    //Calling the getClickEventByDate method of UrlMappingService to get the analytics of the URL mapped/associated with the user(principal) who made the request, and return List of ClickEventDTO object in response.
+        return ResponseEntity.ok(clickEventDTOS);       //Returning the List of ClickEventDTO object to the client which is then converted to JSON and sent to the client
+    }
+
+
 }
