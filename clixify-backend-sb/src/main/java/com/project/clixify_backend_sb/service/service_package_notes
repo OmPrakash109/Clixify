@@ -28,3 +28,5 @@ So we created UserService class to handle the request from controller and manage
                     - Implements the actual URL shortening algorithm in generateShortUrl()
                     - Manages the relationship between URLs and users
                     - Handles saving URL mappings to the database through UrlMappingRepository
+                    - Retrieves all URLs for a specific user using getUrlsByUser()
+                    - Converts between entity and DTO objects for URL data

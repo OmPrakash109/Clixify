@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Random;
 
 @Service        //Marking the class with the @Service annotation to indicate that it is a Spring Managed Service.
@@ -66,5 +67,12 @@ public class UrlMappingService
         urlMappingDTO.setUsername(urlMapping.getUser().getUsername());
 
         return urlMappingDTO;       //returning the 'UrlMappingDTO' object after converting the 'UrlMapping' object to 'UrlMappingDTO' object
+    }
+
+    public List<UrlMappingDTO> getUrlsByUser(User user)
+    {
+        return urlMappingRepository.findByUser(user).stream()   //findByUser(user) method of urlMappindRepository returns a list of UrlMapping objects associated with the user, but we want to return a list of UrlMappingDTO objects associated with the user,
+                .map(this::convertToDto)        //so we use stream() to convert it to a stream and then use map() to convert each UrlMapping object to UrlMappingDTO object
+                .toList();          //and finally we use toList() to convert the stream to a list and return it
     }
 }

@@ -39,4 +39,12 @@ For this, we would be creating:
         - In service method, we would be using repository method 'save' to save the short URL in database by injecting UrlMappingRepository interface
 
 
+4. get all URLs mapped/associated with the user(principal) who made the request
+After implementing generate short URL endpoint, we will implement get all URLs mapped/associated with the user(principal) who made the request endpoint which would allow user to get all the URLs mapped/associated with the user(principal) who made the request.
+For this, we would be creating:
+        - controller method 'getUserUrls' in `UrlMappingController` which would handle the GET request from frontend (by using Principal to get the authenticated user) for getting all the URLs mapped/associated with the user who made the request and forward it to service layer with the help of UrlMappingService that we inject
+        - service method 'getUrlsByUser' in `UrlMappingService` which would handle request from controller and have the business logic for getting all the URLs mapped/associated with the user by using repository method 'findByUser' to get all the URLs from database and then convert each UrlMapping to UrlMappingDTO and return the `List<UrlMappingDTO>` as response
+        - repository method 'findByUser' in `UrlMappingRepository` which would be automatically implemented by Spring Data JPA to find all UrlMappings associated with the given user
+
+
 
