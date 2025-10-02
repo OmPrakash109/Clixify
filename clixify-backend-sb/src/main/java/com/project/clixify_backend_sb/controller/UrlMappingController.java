@@ -24,6 +24,7 @@ public class UrlMappingController
     private UserService userService;        //We inject the object of UserService to get the user details from the principal object
 
     // {"originalUrl":"https://example.com"}  - sample key-value pair passed in @RequestBody where 'originalUrl' is the key and 'https://example.com' is the value - can test on Postman
+    // https://abc.com/Hg9K7IJX --> https://example.com         - short URL --> original URL
 
     @PostMapping("/shorten")        //Controller method for URL mapping with @PostMapping annotation to handle POST requests at '/api/urls/shorten' endpoint
     @PreAuthorize("hasRole('USER')")   //This Controller method is an authenticated method so it requires authentication, and we cannot access this endpoint without authentication
