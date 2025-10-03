@@ -2,6 +2,7 @@ package com.project.clixify_backend_sb.service;
 
 import com.project.clixify_backend_sb.dtos.ClickEventDTO;
 import com.project.clixify_backend_sb.dtos.UrlMappingDTO;
+import com.project.clixify_backend_sb.model.ClickEvent;
 import com.project.clixify_backend_sb.model.UrlMapping;
 import com.project.clixify_backend_sb.model.User;
 import com.project.clixify_backend_sb.repository.ClickEventRepository;
@@ -9,8 +10,10 @@ import com.project.clixify_backend_sb.repository.UrlMappingRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -73,6 +76,7 @@ public class UrlMappingService
         return urlMappingDTO;       //returning the 'UrlMappingDTO' object after converting the 'UrlMapping' object to 'UrlMappingDTO' object
     }
 
+    //Business logic for getting the list of UrlMappingDTO objects associated with the user(called in getUrlsByUser method)
     public List<UrlMappingDTO> getUrlsByUser(User user)
     {
         return urlMappingRepository.findByUser(user).stream()   //findByUser(user) method of urlMappindRepository returns a list of UrlMapping objects associated with the user, but we want to return a list of UrlMappingDTO objects associated with the user,
@@ -89,7 +93,7 @@ public class UrlMappingService
 
         if(urlMapping != null)
         {
-            //First we need to get the list of ClickEvent objects associated with the UrlMapping object
+            //If UrlMapping object is not null, then we need to get the list of ClickEvent objects associated with the UrlMapping object
             //And then we need to group the ClickEvent objects by date and count the number of clicks on each date
             //And finally we need to convert the list of ClickEvent objects to list of ClickEventDTO objects
             return clickEventRepository.findByUrlMappingAndClickDateBetween(urlMapping, start, end).stream()           //findByUrlMappingAndClickDateBetween method of clickEventRepository returns a list of ClickEvent objects associated with the UrlMapping object
@@ -104,5 +108,19 @@ public class UrlMappingService
                     .collect(Collectors.toList());              //collect(Collectors.toList()) collects the ClickEventDTO objects into a list
         }
         return null;        //If no UrlMapping object is found associated with the shortUrl, then return null
+    }
+
+    //Business logic for getting the total clicks by user and date(called in getTotalClicksByUserAndDate method)
+    public Map<LocalDate, Long> getTotalClicksByUserAndDate(User user, LocalDate start, LocalDate end)
+    {
+        //First we need to get the list of UrlMapping objects associated with the user
+        List<UrlMapping> urlMappings = urlMappingRepository.findByUser(user);
+
+        //Then we need to get the list of ClickEvent objects associated with the UrlMapping objects
+        List<ClickEvent> clickEvents = clickEventRepository.findByUrlMappingInAndClickDateBetween(urlMappings, start.atStartOfDay(), end.plusDays(1).atStartOfDay());   //findByUrlMappingInAndClickDateBetween method of clickEventRepository returns a list of ClickEvent objects associated with the UrlMapping objects
+
+        //Then we Collect the data and, we need to group the ClickEvent objects by date and count the number of clicks on each date and return it as a map
+        return clickEvents.stream()
+                .collect(Collectors.groupingBy(click -> click.getClickDate().toLocalDate(), Collectors.counting()));
     }
 }

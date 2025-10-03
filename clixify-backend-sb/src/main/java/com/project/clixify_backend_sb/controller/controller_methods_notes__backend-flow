@@ -53,7 +53,7 @@ Now that we have implemented endpoints for user registration, login, URL shorten
 
 1. First Endpoint:
 
-GET /analytics/abc123?startDate=2024-12-01T00:00:00&endDate=2024-12-15-07T23:59:59
+GET /analytics/abc123?startDate=2024-12-01T00:00:00&endDate=2024-12-15T23:59:59
 
 In above line: /analytics = endpoint and abc123 = shortUrl
 This helps to get the analytics (click count by date) for a particular short URL by date, within a particular date range(that we pass as parameter)
@@ -71,7 +71,7 @@ This helps to get the analytics (click count by date) for a particular short URL
 
 2. Second Endpoint
 
-GET /totalclicks?startDate=2024-12-01&endDate=2024-12-15
+GET totalClicks?startDate=2024-12-01&endDate=2024-12-15         - only Date and not Time.
 
 {
     "2024-12-01": 15,

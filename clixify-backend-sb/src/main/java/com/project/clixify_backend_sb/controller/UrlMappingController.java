@@ -12,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -67,4 +68,19 @@ public class UrlMappingController
     }
 
 
+
+    //Controller method with @GetMapping annotation, to handle the GET requests at '/api/urls/totalClicks' endpoint, for getting the total clicks of the URL mapped/associated with the user(principal) who made the request, and return Map of LocalDate and Long object in response.
+    @GetMapping("/totalClicks")     //It is a URL total clicks endpoint
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<Map<LocalDate, Long>> getTotalClicksByDate(Principal principal,
+                                                                     @RequestParam("startDate") String startDate,
+                                                                     @RequestParam("endDate") String endDate)     //We need total Clicks of all the URLs that the user(principal) who made the request has mapped/associated, owns. That's why we need to get the user(principal) who made the request.
+    {
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;     //Creating a DateTimeFormatter object to parse the date. ISO_LOCAL_DATE is a pre-defined pattern for parsing date in the format of 'yyyy-MM-dd' like 2024-01-01, this 2024-12-01 we get from the request parameters @RequestParam "startDate" and "endDate".
+        User user = userService.findByUsername(principal.getName());        //First we will get the user from the Security Context. We do so by extracting user's name from principal and using it to find the user from the database with the help of userService findByUsername method.
+        LocalDate start = LocalDate.parse(startDate, formatter);    //Parsing the start date into LocalDate object format for the start date.
+        LocalDate end = LocalDate.parse(endDate, formatter);        //Parsing the end date into LocalDate object format for the end date.
+        Map<LocalDate, Long> totalClicks =urlMappingService.getTotalClicksByUserAndDate(user, start, end);      //Calling the getTotalClicksByUserAndDate method of UrlMappingService to get the total clicks of all the URLs that the user(principal) who made the request has mapped/associated, owns, and return Map of LocalDate and Long object in response.
+        return ResponseEntity.ok(totalClicks);      //Returning the Map of LocalDate and Long object to the client which is then converted to JSON and sent to the client
+    }
 }
