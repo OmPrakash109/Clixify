@@ -83,4 +83,5 @@ public class UrlMappingController
         Map<LocalDate, Long> totalClicks =urlMappingService.getTotalClicksByUserAndDate(user, start, end);      //Calling the getTotalClicksByUserAndDate method of UrlMappingService to get the total clicks of all the URLs that the user(principal) who made the request has mapped/associated, owns, and return Map of LocalDate and Long object in response.
         return ResponseEntity.ok(totalClicks);      //Returning the Map of LocalDate and Long object to the client which is then converted to JSON and sent to the client
     }
+
 }
