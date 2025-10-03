@@ -1,59 +1,27 @@
-Repository Layer Documentation
+# Repository Documentation
 ==============================
 
 1. UserRepository
 - Interface: Extends JpaRepository<User, Long>
-- Purpose: Handles database operations for User entity
-- Key Methods:
-  - findByUsername(String username): Retrieves a user by their username (returns Optional<User>)
-  - existsByUsername(String username): Checks if a username exists (returns boolean)
-  - existsByEmail(String email): Checks if an email exists (returns boolean)
-- Inherited Methods (from JpaRepository):
-  - save(): Saves a user entity
-  - findById(): Finds a user by ID
-  - findAll(): Retrieves all users
-  - deleteById(): Deletes a user by ID
+- Custom Methods:
+  - `Optional<User> findByUsername(String username)`: Retrieves a user by their username
 
 2. UrlMappingRepository
 - Interface: Extends JpaRepository<UrlMapping, Long>
-- Purpose: Manages database operations for UrlMapping entity
-- Key Methods:
-  - findByShortUrl(String shortUrl): Retrieves a URL mapping by its short URL
-  - findByUser(User user): Gets all URL mappings for a specific user
-- Inherited Methods (from JpaRepository):
-  - save(): Saves a URL mapping
-  - findById(): Finds a URL mapping by ID
-  - findAll(): Retrieves all URL mappings
-  - deleteById(): Deletes a URL mapping by ID
+- Custom Methods:
+  - `UrlMapping findByShortUrl(String shortUrl)`: Retrieves a URL mapping by its short URL
+  - `List<UrlMapping> findByUser(User user)`: Finds all URL mappings for a specific user
 
-Common Repository Features:
-- @Repository: Marks the interface as a Spring Data repository
-- Type Parameters: <EntityType, ID_Type>
-- Auto-implemented: Methods are implemented by Spring Data JPA at runtime
-- Transactional: All methods are transactional by default
+3. ClickEventRepository
+- Interface: Extends JpaRepository<ClickEvent, Long>
+- Custom Methods:
+  - `List<ClickEvent> findByUrlMappingAndClickDateBetween(UrlMapping mapping, LocalDateTime startDate, LocalDateTime endDate)`: 
+    - Retrieves click events for a specific URL mapping within a date range
+  - `List<ClickEvent> findByUrlMappingInAndClickDateBetween(List<UrlMapping> urlMappings, LocalDateTime startDate, LocalDateTime endDate)`:
+    - Retrieves click events for multiple URL mappings within a date range
 
-Best Practices:
-1. Naming Conventions:
-   - Use findBy[Property] for single result queries
-   - Use existsBy[Property] for existence checks
-   - Use deleteBy[Property] for deletion by property
-
-2. Return Types:
-   - Use Optional<T> for methods that might not return a result
-   - Use List<T> for collections
-   - Use primitive boolean for existence checks
-
-3. Custom Queries:
-   - Use @Query for complex queries
-   - Follow Spring Data JPA naming conventions for method names
-   - Consider adding indexes for frequently queried fields
-
-4. Performance:
-   - Use @EntityGraph for eager loading of relationships
-   - Consider using @Modifying with @Query for bulk operations
-   - Use pagination (Pageable) for large result sets
-
-5. Error Handling:
-   - Handle EmptyResultDataAccessException for single result queries
-   - Use @Transactional for write operations
-   - Consider adding @Lock for optimistic/pessimistic locking when needed
+Common Features:
+- All repositories are annotated with @Repository
+- All extend JpaRepository with their respective entity types
+- Method names follow Spring Data JPA naming conventions
+- Query methods are automatically implemented by Spring Data JPA

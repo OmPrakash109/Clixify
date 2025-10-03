@@ -11,22 +11,43 @@
 
 
 --------------
-After completing WebSecurityConfig class, we are done with security configuration.
 Now, we will work on 'register' endpoint which would allow user to register into our application.
 For this, the service layer would be handling the request from controller and manage the authentication.
 So we created UserService class to handle the request from controller and manage the authentication.
 
 
-* UserService: We created the 'UserService' class (annotated with @Service) to handle all the business logic related to user management and authentication in our application.
-                    - It provides methods for user registration, where it takes the user details, validates them, hashes the password using BCrypt, and saves the user to the database through UserRepository.
-                    - The service also includes methods to find users by username or email, which are used during authentication and for checking if a username/email already exists during registration.
-                    - It works closely with Spring Security and UserDetailsService to handle user authentication and authorization, ensuring that only authenticated users can access protected endpoints based on their roles.
+* UserService: Handles all business logic related to user management and authentication
+  - User registration with validation and password hashing
+  - User authentication and JWT token generation
+  - User lookup by username/email
+  - Role-based access control implementation
+  - Works with Spring Security for authentication flow
+
+* UrlMappingService: Manages URL shortening and analytics functionality
+  - URL Shortening:
+    - Generates unique short URLs (8-character alphanumeric)
+    - Maps short URLs to original URLs with user association
+    - Tracks creation timestamps and click counts
+  - Analytics:
+    - Tracks and aggregates click events by date
+    - Provides per-URL click statistics
+    - Generates user-specific analytics across all their URLs
+  - Key Methods:
+    - createShortUrl(): Generates and saves a new short URL
+    - getUrlsByUser(): Retrieves all URLs for a specific user
+    - getClickEventByDate(): Gets click analytics for a specific URL
+    - getTotalClicksByUserAndDate(): Aggregates click data across user's URLs
+  - Data Conversion:
+    - Converts between entity and DTO objects
+    - Handles date-based data aggregation
+    - Manages relationships between URLs and click events
 
 
-* UrlMappingService: handles the core business logic for URL shortening functionality.
-                    - Contains methods for creating short URLs and converting between DTO and entity objects
-                    - Implements the actual URL shortening algorithm in generateShortUrl()
-                    - Manages the relationship between URLs and users
-                    - Handles saving URL mappings to the database through UrlMappingRepository
-                    - Retrieves all URLs for a specific user using getUrlsByUser()
-                    - Converts between entity and DTO objects for URL data
+
+Service Layer Features:
+- Transaction management for data consistency
+- Business logic encapsulation
+- Exception handling and validation
+- Integration with repositories for data access
+- DTO conversion for clean API contracts
+- Performance optimization for analytics queries

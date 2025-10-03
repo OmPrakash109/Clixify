@@ -66,7 +66,30 @@ Here we have__________________
 
 3. UrlMappingDTO
    - Used in: URL shortening endpoints (`/api/urls/shorten`)
-   - Purpose: Represents the response after URL shortening
    - Fields: originalUrl, shortUrl, creationDate, user (basic info)
    - Usage: Returned after successful URL shortening, contains both original and generated short URL
    - Security: Only includes non-sensitive, necessary URL information
+
+
+4. ClickEventDTO
+   - Used in: Analytics endpoints for tracking URL clicks
+   - Purpose: Represents click count data for a specific date
+   - Fields: 
+     - clickDate (LocalDate): The date when clicks occurred
+     - count (Long): Number of clicks on the specific date
+   - Usage: 
+     - Returned in analytics endpoints to show click trends over time
+     - Maps directly to the response structure expected by the frontend
+   - Example Response:
+     ```json
+     [
+       {
+         "clickDate": "2024-12-01",
+         "count": 10
+       },
+       {
+         "clickDate": "2024-12-02",
+         "count": 20
+       }
+     ]
+     ```

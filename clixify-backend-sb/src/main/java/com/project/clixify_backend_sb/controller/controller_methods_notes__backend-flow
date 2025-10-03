@@ -2,13 +2,16 @@ After implementing security part that we did through packages:
             - models
             - repository/UserRepository
             - service/UserDetailsImpl
-            - service/UserDetailsServiceImpl
             - security/jwt classes
             - security/WebSecurityConfig
 
-Endpoints: ------------------------------------
+Endpoints defined in 'AuthController': ------------------------------------
 
-1. register
+1. register :::::::::::::::::
+
+- Endpoint: `POST /api/auth/register`
+- Controller: `AuthController.registerUser()`
+- Service: `UserService.registerUser()`
 
 We will work on 'register' endpoint which would allow user to register into our application.
 For this, we would be creating:
@@ -22,7 +25,11 @@ DTO(Data Transfer Object) is a simple object used to transfer data between layer
 We use DTO instead of using entity directly in our controller, because we don't want to expose our database structure to the outside world.
 
 
-2. login
+2. login ::::::::::::::::::::::
+
+- Endpoint: `POST /api/auth/login`
+- Controller: `AuthController.authenticateUser()`
+- Service: `UserService.authenticateUser()`
 
 After implementing register endpoint, we will implement login endpoint which would allow user to login into our application using username and password, and after successful login, it would generate a token for the user that would be used for authentication in future requests.
 For this, we would be creating:
@@ -30,30 +37,17 @@ For this, we would be creating:
         - service method 'authenticateUser' which would handle request from controller and have the business logic for user login and generate a token for the user by using JwtUtils class and return the token as response
 
 
-3. generate short URL
-
-After implementing login endpoint, we will implement generate short URL endpoint which would allow user to generate a short URL for their original URL.
-For this, we would be creating:
-        - controller method 'createShortUrl' in `UrlMappingController` which would handle the POST request from frontend (by using Map<String, String> for request body) for generating short URL and forward it to service layer with the help of UrlMappingService that we inject
-        - service method 'createShortUrl' in `UrlMappingService` which would handle request from controller and have the business logic for generating short URL and return the `UrlMappingDTO` as response
-        - In service method, we would be using repository method 'save' to save the short URL in database by injecting UrlMappingRepository interface
 
 
-4. get all URLs mapped/associated with the user(principal) who made the request
-After implementing generate short URL endpoint, we will implement get all URLs mapped/associated with the user(principal) who made the request endpoint which would allow user to get all the URLs mapped/associated with the user(principal) who made the request.
-For this, we would be creating:
-        - controller method 'getUserUrls' in `UrlMappingController` which would handle the GET request from frontend (by using Principal to get the authenticated user) for getting all the URLs mapped/associated with the user who made the request and forward it to service layer with the help of UrlMappingService that we inject
-        - service method 'getUrlsByUser' in `UrlMappingService` which would handle request from controller and have the business logic for getting all the URLs mapped/associated with the user by using repository method 'findByUser' to get all the URLs from database and then convert each UrlMapping to UrlMappingDTO and return the `List<UrlMappingDTO>` as response
-        - repository method 'findByUser' in `UrlMappingRepository` which would be automatically implemented by Spring Data JPA to find all UrlMappings associated with the given user
+--------------NOW THAT we have implemented endpoints for user registration, login, URL shortening, and URL retrieval, we will work on 'Analytics' part where we would implement 2 endpoints which would allow user to get analytics of their URLs.
 
+First Endpoint----
 
+- Endpoint: `GET /api/analytics/{shortUrl}?startDate={startDate}&endDate={endDate}`
+- Controller: `UrlMappingController.getClickEventByDate()`
+- Service: `UrlMappingService.getClickEventByDate()`
 
-
-Now that we have implemented endpoints for user registration, login, URL shortening, and URL retrieval, we will work on 'Analytics' part where we would implement 2 endpoints which would allow user to get analytics of their URLs.
-
-1. First Endpoint:
-
-GET /analytics/abc123?startDate=2024-12-01T00:00:00&endDate=2024-12-15T23:59:59
+Example: `GET /api/analytics/abc123?startDate=2024-12-01T00:00:00&endDate=2024-12-15T23:59:59`
 
 In above line: /analytics = endpoint and abc123 = shortUrl
 This helps to get the analytics (click count by date) for a particular short URL by date, within a particular date range(that we pass as parameter)
@@ -69,9 +63,26 @@ This helps to get the analytics (click count by date) for a particular short URL
 ]
 
 
-2. Second Endpoint
+3. get analytics of a particular short URL by date, within a particular date range
 
-GET totalClicks?startDate=2024-12-01&endDate=2024-12-15         - only Date and not Time.
+After implementing 'get all URLs mapped/associated with the user(principal) who made the request', we will implement 'get analytics of a particular short URL by date, within a particular date range' endpoint which would allow user to get analytics of a particular short URL by date, within a particular date range.
+For this, we would be creating:
+        - controller method 'getClickEventByDate' in `UrlMappingController` which would handle the GET request from frontend (by using Map<String, String> for request body) for getting analytics of a particular short URL by date, within a particular date range and forward it to service layer with the help of UrlMappingService that we inject
+        - service method 'getClickEventByDate' in `UrlMappingService` which would handle request from controller and have the business logic for getting analytics of a particular short URL by date, within a particular date range and return the `List<ClickEventDTO>` as response
+        - repository method 'findByUrlMappingAndClickDateBetween' in `ClickEventRepository` which would be automatically implemented by Spring Data JPA to find all ClickEvents associated with the given URL mapping and date range
+        - repository method 'findByUrlMappingInAndClickDateBetween' in `ClickEventRepository` which would be automatically implemented by Spring Data JPA to find all ClickEvents associated with the given URL mapping and date range
+
+
+
+
+
+Second Endpoint----
+
+- Endpoint: `GET /api/analytics/totalClicks?startDate={startDate}&endDate={endDate}`
+- Controller: `UrlMappingController.getTotalClicksByUserAndDate()`
+- Service: `UrlMappingService.getTotalClicksByUserAndDate()`
+
+Example: `GET /api/analytics/totalClicks?startDate=2024-12-01&endDate=2024-12-15` (only Date, not Time)
 
 {
     "2024-12-01": 15,
@@ -79,9 +90,16 @@ GET totalClicks?startDate=2024-12-01&endDate=2024-12-15         - only Date and 
 }
 
 In above line: /totalclicks = endpoint
-
 This gives total clicks of all the URLs that user owns or has created(thats why we did not pass any specific URL), within a particular date range.(that we pass as parameter)
 
 
+4. get total clicks of all the URLs that user owns or has created(thats why we did not pass any specific URL), within a particular date range
+
+After implementing 'get analytics of a particular short URL by date, within a particular date range', we will implement 'get total clicks of all the URLs that user owns or has created(thats why we did not pass any specific URL), within a particular date range' endpoint which would allow user to get total clicks of all the URLs that user owns or has created(thats why we did not pass any specific URL), within a particular date range.
+For this, we would be creating:
+        - controller method 'getTotalClicksByUserAndDate' in `UrlMappingController` which would handle the GET request from frontend (by using Map<String, String> for request body) for getting total clicks of all the URLs that user owns or has created(thats why we did not pass any specific URL), within a particular date range and forward it to service layer with the help of UrlMappingService that we inject
+        - service method 'getTotalClicksByUserAndDate' in `UrlMappingService` which would handle request from controller and have the business logic for getting total clicks of all the URLs that user owns or has created(thats why we did not pass any specific URL), within a particular date range and return the `List<ClickEventDTO>` as response
+        - repository method 'findByUrlMappingAndClickDateBetween' in `ClickEventRepository` which would be automatically implemented by Spring Data JPA to find all ClickEvents associated with the given URL mapping and date range
+        - repository method 'findByUrlMappingInAndClickDateBetween' in `ClickEventRepository` which would be automatically implemented by Spring Data JPA to find all ClickEvents associated with the given URL mapping and date range
 
 
