@@ -17,7 +17,7 @@ public class RedirectController
     private UrlMappingService urlMappingService;    //Dependency injection for UrlMappingService as it has business logic method for getting the original URL from the short URL.
 
     //Controller method with @GetMapping annotation, to handle the GET requests at '/{shortUrl}' endpoint, for redirecting the user to the original URL mapped to the short URL.
-    @GetMapping("/{shortUrl}")      //shortUrl is passed as part of the URL
+    @GetMapping("/{shortUrl}")      //shortUrl is passed as part of the URL directly like http://localhost:8080/{shortUrl} as we have defined the path variable in the @GetMapping annotation (that's why we have not used @RequestMapping annotation) alongside @RestController annotation.
     public ResponseEntity<Void> redirect(@PathVariable String shortUrl)
     {
         UrlMapping urlMapping = urlMappingService.getOriginalUrl(shortUrl); //Getting the original URL from the short URL using the business logic method of UrlMappingService, which returns a UrlMapping object, and we can extract the original URL from it.
