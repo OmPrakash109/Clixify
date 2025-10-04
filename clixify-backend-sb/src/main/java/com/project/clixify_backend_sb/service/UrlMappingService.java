@@ -123,4 +123,10 @@ public class UrlMappingService
         return clickEvents.stream()
                 .collect(Collectors.groupingBy(click -> click.getClickDate().toLocalDate(), Collectors.counting()));
     }
+
+    public UrlMapping getOriginalUrl(String shortUrl)
+    {
+        UrlMapping urlMapping = urlMappingRepository.findByShortUrl(shortUrl);      //Here it says, 'urlMapping' local variable is redundant, but we keep this as redundant as we have to capture the Analytics as well.
+        return urlMapping;
+    }
 }

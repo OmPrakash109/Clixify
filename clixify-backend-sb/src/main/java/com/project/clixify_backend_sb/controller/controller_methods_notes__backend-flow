@@ -5,7 +5,7 @@ After implementing security part that we did through packages:
             - security/jwt classes
             - security/WebSecurityConfig
 
-Endpoints defined in 'AuthController': ------------------------------------
+Endpoints defined in 'AuthController': -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 1. register :::::::::::::::::
 
@@ -38,16 +38,25 @@ For this, we would be creating:
 
 
 
-
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --------------NOW THAT we have implemented endpoints for user registration, login, URL shortening, and URL retrieval, we will work on 'Analytics' part where we would implement 2 endpoints which would allow user to get analytics of their URLs.
+
+3. get analytics of a particular short URL by date, within a particular date range
+
+After implementing 'get all URLs mapped/associated with the user(principal) who made the request', we will implement 'get analytics of a particular short URL by date, within a particular date range' endpoint which would allow user to get analytics of a particular short URL by date, within a particular date range.
+For this, we would be creating:
+        - controller method 'getClickEventByDate' in `UrlMappingController` which would handle the GET request from frontend (by using Map<String, String> for request body) for getting analytics of a particular short URL by date, within a particular date range and forward it to service layer with the help of UrlMappingService that we inject
+        - service method 'getClickEventByDate' in `UrlMappingService` which would handle request from controller and have the business logic for getting analytics of a particular short URL by date, within a particular date range and return the `List<ClickEventDTO>` as response
+        - repository method 'findByUrlMappingAndClickDateBetween' in `ClickEventRepository` which would be automatically implemented by Spring Data JPA to find all ClickEvents associated with the given URL mapping and date range
+        - repository method 'findByUrlMappingInAndClickDateBetween' in `ClickEventRepository` which would be automatically implemented by Spring Data JPA to find all ClickEvents associated with the given URL mapping and date range
 
 First Endpoint----
 
-- Endpoint: `GET /api/analytics/{shortUrl}?startDate={startDate}&endDate={endDate}`
+- Endpoint: `GET /api/urls/analytics/{shortUrl}?startDate={startDate}&endDate={endDate}`
 - Controller: `UrlMappingController.getClickEventByDate()`
 - Service: `UrlMappingService.getClickEventByDate()`
 
-Example: `GET /api/analytics/abc123?startDate=2024-12-01T00:00:00&endDate=2024-12-15T23:59:59`
+Example: `GET api/urls/analytics/abc123?startDate=2024-12-01T00:00:00&endDate=2024-12-15T23:59:59`
 
 In above line: /analytics = endpoint and abc123 = shortUrl
 This helps to get the analytics (click count by date) for a particular short URL by date, within a particular date range(that we pass as parameter)
@@ -63,37 +72,9 @@ This helps to get the analytics (click count by date) for a particular short URL
 ]
 
 
-3. get analytics of a particular short URL by date, within a particular date range
-
-After implementing 'get all URLs mapped/associated with the user(principal) who made the request', we will implement 'get analytics of a particular short URL by date, within a particular date range' endpoint which would allow user to get analytics of a particular short URL by date, within a particular date range.
-For this, we would be creating:
-        - controller method 'getClickEventByDate' in `UrlMappingController` which would handle the GET request from frontend (by using Map<String, String> for request body) for getting analytics of a particular short URL by date, within a particular date range and forward it to service layer with the help of UrlMappingService that we inject
-        - service method 'getClickEventByDate' in `UrlMappingService` which would handle request from controller and have the business logic for getting analytics of a particular short URL by date, within a particular date range and return the `List<ClickEventDTO>` as response
-        - repository method 'findByUrlMappingAndClickDateBetween' in `ClickEventRepository` which would be automatically implemented by Spring Data JPA to find all ClickEvents associated with the given URL mapping and date range
-        - repository method 'findByUrlMappingInAndClickDateBetween' in `ClickEventRepository` which would be automatically implemented by Spring Data JPA to find all ClickEvents associated with the given URL mapping and date range
 
 
-
-
-
-Second Endpoint----
-
-- Endpoint: `GET /api/analytics/totalClicks?startDate={startDate}&endDate={endDate}`
-- Controller: `UrlMappingController.getTotalClicksByUserAndDate()`
-- Service: `UrlMappingService.getTotalClicksByUserAndDate()`
-
-Example: `GET /api/analytics/totalClicks?startDate=2024-12-01&endDate=2024-12-15` (only Date, not Time)
-
-{
-    "2024-12-01": 15,
-    "2024-12-02": 20
-}
-
-In above line: /totalclicks = endpoint
-This gives total clicks of all the URLs that user owns or has created(thats why we did not pass any specific URL), within a particular date range.(that we pass as parameter)
-
-
-4. get total clicks of all the URLs that user owns or has created(thats why we did not pass any specific URL), within a particular date range
+4. get total clicks of all the URLs that user owns or has created(that's why we did not pass any specific URL), within a particular date range
 
 After implementing 'get analytics of a particular short URL by date, within a particular date range', we will implement 'get total clicks of all the URLs that user owns or has created(thats why we did not pass any specific URL), within a particular date range' endpoint which would allow user to get total clicks of all the URLs that user owns or has created(thats why we did not pass any specific URL), within a particular date range.
 For this, we would be creating:
@@ -101,5 +82,34 @@ For this, we would be creating:
         - service method 'getTotalClicksByUserAndDate' in `UrlMappingService` which would handle request from controller and have the business logic for getting total clicks of all the URLs that user owns or has created(thats why we did not pass any specific URL), within a particular date range and return the `List<ClickEventDTO>` as response
         - repository method 'findByUrlMappingAndClickDateBetween' in `ClickEventRepository` which would be automatically implemented by Spring Data JPA to find all ClickEvents associated with the given URL mapping and date range
         - repository method 'findByUrlMappingInAndClickDateBetween' in `ClickEventRepository` which would be automatically implemented by Spring Data JPA to find all ClickEvents associated with the given URL mapping and date range
+
+Second Endpoint----
+
+- Endpoint: `GET /api/urls/totalClicks?startDate={startDate}&endDate={endDate}`
+- Controller: `UrlMappingController.getTotalClicksByUserAndDate()`
+- Service: `UrlMappingService.getTotalClicksByUserAndDate()`
+
+Example: `GET /api/urls/totalClicks?startDate=2024-12-01&endDate=2024-12-15` (only Date, not Time)
+
+{
+    "2024-12-01": 15,
+    "2024-12-02": 20
+}
+
+In above line: /totalClicks = endpoint
+This gives total clicks of all the URLs that user owns or has created(that's why we did not pass any specific URL), within a particular date range.(that we pass as parameter)
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------Now that we have implemented endpoints for Specific URL Analytics and Total Clicks Analytics, we will now work on Redirect functionality which would allow user to redirect to the long URL which is mapped to the short URL that user has hit.
+And for this, we are going to make use of the concept of HTTP Headers.
+
+Steps as how this Redirect Functionality Works:
+1. When user hits a short URL, and our Server receives the request, the server will extract the Short URL and get the URL mapping for that short URL from the database.
+2. Then the server will find the original URL mapped to the short URL and then it will make use of HTTP Headers to redirect the user to the Original URL.
+3. And for this, we will be setting a Location header to this Original URL via our Code and then user will be redirected to the Original URL.
+
+
 
 
