@@ -1,70 +1,90 @@
 Clixify/
-├── .gitignore
-├── PROJECT_CONTEXT.md
-├── folder-structure.txt
-├── clixify-backend-sb/
+├── .git/                                          # Git version control
+│   └── ...
+├── .gitignore                                     # Git ignore rules
+├── .idea/                                         # IntelliJ IDEA configuration
+│   └── ...
+├── PROJECT_CONTEXT.md                             # Project documentation
+├── README.md                                      # Project README
+├── folder-structure.txt                           # This file
+│
+├── clixify-backend-sb/                            # Spring Boot backend
 │   ├── src/
-│   │   └── main/
-│   │       ├── java/com/project/clixify_backend_sb/
-│   │       │   ├── ClixifyBackendSbApplication.java  # Main application class
-│   │       │   
-│   │       │   ├── controller/                     # REST Controllers
-│   │       │   │   ├── AuthController.java         # Handles user authentication
-│   │       │   │   ├── UrlMappingController.java   # Handles URL operations
-│   │       │   │   ├── RedirectController.java     # Handles short URL redirection
-│   │       │   │   └── controller_methods_notes__backend-flow  # Controller documentation
-│   │       │
-│   │       │   ├── dtos/                           # Data Transfer Objects
-│   │       │   │   ├── ClickEventDTO.java          # Analytics data for URL clicks
-│   │       │   │   ├── LoginRequest.java           # Login request payload
-│   │       │   │   ├── RegisterRequest.java        # Registration request payload
-│   │       │   │   ├── UrlMappingDTO.java          # URL mapping response
-│   │       │   │   └── dto_notes                   # DTO documentation
-│   │       │
-│   │       │   ├── model/                          # JPA Entities
-│   │       │   │   ├── ClickEvent.java             # Tracks URL click events
-│   │       │   │   ├── UrlMapping.java             # Maps short URLs to long URLs
-│   │       │   │   ├── User.java                   # User account information
-│   │       │   │   └── modelOrEntity_notes         # Model documentation
-│   │       │
-│   │       │   ├── repository/                     # Data Access Layer
-│   │       │   │   ├── ClickEventRepository.java   # Click event data operations
-│   │       │   │   ├── UrlMappingRepository.java   # URL mapping data operations
-│   │       │   │   ├── UserRepository.java         # User data operations
-│   │       │   │   └── repository_notes            # Repository documentation
-│   │       │
-│   │       │   ├── security/                       # Security configuration
-│   │       │   │   ├── jwt/                        # JWT implementation
-│   │       │   │   │   ├── JwtAuthenticationFilter.java  # Validates JWT tokens
-│   │       │   │   │   ├── JwtAuthenticationResponse.java # Auth response DTO
-│   │       │   │   │   └── JwtUtils.java          # JWT token utilities
-│   │       │   │   │
-│   │       │   │   ├── UserDetailsImpl.java        # Custom UserDetails implementation
-│   │       │   │   ├── UserDetailsServiceImpl.java # Custom UserDetailsService
-│   │       │   │   ├── WebSecurityConfig.java      # Security configuration
-│   │       │   │   ├── Authentication_Authorization_Guide.md  # Auth documentation
-│   │       │   │   └── security_package_note       # Security documentation
-│   │       │
-│   │       │   └── service/                       # Business logic
-│   │       │       ├── impl/                      # Service implementations
-│   │       │       │   └── UserDetailsServiceImpl.java
-│   │       │       ├── UrlMappingService.java     # URL operations logic
-│   │       │       ├── UserService.java           # User operations logic
-│   │       │       └── service_package_notes      # Service layer documentation
-│   │       │
-│   │       └── resources/
-│   │           ├── application.properties         # Application configuration
-│   │           └── application-dev.properties     # Development configuration
+│   │   ├── main/
+│   │   │   ├── java/com/project/clixify_backend_sb/
+│   │   │   │   ├── ClixifyBackendSbApplication.java  # Main application class
+│   │   │   │
+│   │   │   │   ├── config/                         # Configuration classes
+│   │   │   │   │   └── ...
+│   │   │   │   │
+│   │   │   │   ├── controller/                     # REST Controllers
+│   │   │   │   │   ├── AuthController.java         # Handles user authentication
+│   │   │   │   │   ├── UrlMappingController.java   # Handles URL operations
+│   │   │   │   │   ├── RedirectController.java     # Handles short URL redirection
+│   │   │   │   │   └── controller_methods_notes__backend-flow  # Controller documentation
+│   │   │   │   │
+│   │   │   │   ├── dtos/                           # Data Transfer Objects
+│   │   │   │   │   ├── ClickEventDTO.java          # Analytics data for URL clicks
+│   │   │   │   │   ├── LoginRequest.java           # Login request payload
+│   │   │   │   │   ├── RegisterRequest.java        # Registration request payload
+│   │   │   │   │   ├── UrlMappingDTO.java          # URL mapping response
+│   │   │   │   │   └── dto_notes                   # DTO documentation
+│   │   │   │   │
+│   │   │   │   ├── fixes/                          # Bug fixes and patches
+│   │   │   │   │   ├── ...                         # Various fixes applied during development
+│   │   │   │   │
+│   │   │   │   ├── model/                          # JPA Entities
+│   │   │   │   │   ├── ClickEvent.java             # Tracks URL click events
+│   │   │   │   │   ├── UrlMapping.java             # Maps short URLs to long URLs
+│   │   │   │   │   ├── User.java                   # User account information
+│   │   │   │   │   └── modelOrEntity_notes         # Model documentation
+│   │   │   │   │
+│   │   │   │   ├── repository/                     # Data Access Layer
+│   │   │   │   │   ├── ClickEventRepository.java   # Click event data operations
+│   │   │   │   │   ├── UrlMappingRepository.java   # URL mapping data operations
+│   │   │   │   │   ├── UserRepository.java         # User data operations
+│   │   │   │   │   └── repository_notes            # Repository documentation
+│   │   │   │   │
+│   │   │   │   ├── security/                       # Security configuration
+│   │   │   │   │   ├── jwt/                        # JWT implementation
+│   │   │   │   │   │   ├── JwtAuthenticationFilter.java  # Validates JWT tokens
+│   │   │   │   │   │   ├── JwtAuthenticationResponse.java # Auth response DTO
+│   │   │   │   │   │   └── JwtUtils.java          # JWT token utilities
+│   │   │   │   │   │
+│   │   │   │   │   ├── UserDetailsImpl.java        # Custom UserDetails implementation
+│   │   │   │   │   ├── UserDetailsServiceImpl.java # Custom UserDetailsService
+│   │   │   │   │   ├── WebSecurityConfig.java      # Security configuration
+│   │   │   │   │   ├── Authentication_Authorization_Guide.md  # Auth documentation
+│   │   │   │   │   └── security_package_note       # Security documentation
+│   │   │   │   │
+│   │   │   │   └── service/                       # Business logic
+│   │   │   │       ├── impl/                      # Service implementations
+│   │   │   │       │   └── UserDetailsServiceImpl.java
+│   │   │   │       ├── UrlMappingService.java     # URL operations logic
+│   │   │   │       ├── UserService.java           # User operations logic
+│   │   │   │       └── service_package_notes      # Service layer documentation
+│   │   │   │
+│   │   │   └── resources/                         # Configuration and static resources
+│   │   │       ├── application.properties         # Main application configuration
+│   │   │       ├── application-dev.properties     # Development configuration
+│   │   │       └── ...
+│   │   │
+│   │   └── test/                                  # Test files
+│   │       └── ...
 │   │
-│   └── target/                                    # Compiled classes and resources
+│   ├── target/                                    # Compiled classes and resources
+│   ├── pom.xml                                    # Maven configuration
+│   └── ...
 │
 └── clixify-frontend-react/                        # React frontend (to be developed)
     ├── public/                                    # Static files
+    │   ├── index.html                             # Main HTML file
+    │   └── ...
     └── src/                                       # Source files
         ├── components/                            # Reusable UI components
         ├── pages/                                 # Page components
         ├── services/                              # API services
-        └── App.js                                 # Main application component
+        └── index.js                               # Application entry point
 
 Key Components:
 
