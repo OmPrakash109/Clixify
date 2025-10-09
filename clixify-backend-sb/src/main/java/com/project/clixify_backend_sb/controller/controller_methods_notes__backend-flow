@@ -111,5 +111,16 @@ Steps as how this Redirect Functionality Works:
 3. And for this, we will be setting a Location header to this Original URL via our Code and then user will be redirected to the Original URL.
 
 
+-----------------------------------------------------------------
+-----After implementing the Redirect functionality, Integrate the Analytics part in it, inside getOriginalUrl method of UrlMappingService to:
+        - Increase the click count of the URL mapping for the short URL that user has hit, by 1
+        - Record the date and time of the Click by Creating a ClickEvent object with the current timestamp
+        - Save the ClickEvent to the database for future analytics
+        - The implementation includes:
+          1. Finding the URL mapping by short URL
+          2. Incrementing the click count
+          3. Creating and saving a new ClickEvent
+          4. Returning the URL mapping with updated click count
+
 
 

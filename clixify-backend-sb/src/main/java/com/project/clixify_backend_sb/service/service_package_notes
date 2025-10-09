@@ -32,11 +32,20 @@ So we created UserService class to handle the request from controller and manage
     - Tracks and aggregates click events by date
     - Provides per-URL click statistics
     - Generates user-specific analytics across all their URLs
+  - URL Redirection:
+    - Handles short URL lookups
+    - Manages click event recording
+    - Updates URL statistics in real-time
   - Key Methods:
     - createShortUrl(): Generates and saves a new short URL
     - getUrlsByUser(): Retrieves all URLs for a specific user
     - getClickEventByDate(): Gets click analytics for a specific URL
     - getTotalClicksByUserAndDate(): Aggregates click data across user's URLs
+    - getOriginalUrl(): Handles URL redirection and click tracking
+      - Looks up URL by short code
+      - Increments click counter
+      - Records click event with timestamp
+      - Returns URL mapping for redirection
   - Data Conversion:
     - Converts between entity and DTO objects
     - Handles date-based data aggregation

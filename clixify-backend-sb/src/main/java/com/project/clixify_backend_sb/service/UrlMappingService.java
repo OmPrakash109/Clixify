@@ -124,9 +124,22 @@ public class UrlMappingService
                 .collect(Collectors.groupingBy(click -> click.getClickDate().toLocalDate(), Collectors.counting()));
     }
 
+    //Business logic for getting the original URL(called in RedirectController)
     public UrlMapping getOriginalUrl(String shortUrl)
     {
-        UrlMapping urlMapping = urlMappingRepository.findByShortUrl(shortUrl);      //Here it says, 'urlMapping' local variable is redundant, but we keep this as redundant as we have to capture the Analytics as well.
-        return urlMapping;
+        UrlMapping urlMapping = urlMappingRepository.findByShortUrl(shortUrl);  //We need to get the UrlMapping object associated with the shortUrl to increment the click count and record the click event, and the UrlMapping object.
+
+        if(urlMapping != null)      //If UrlMapping object is not null, then we need to increment the click count and record the click event
+        {
+            urlMapping.setClickCount(urlMapping.getClickCount() + 1);
+            urlMappingRepository.save(urlMapping);      //We need to save the UrlMapping object in the database after incrementing the click count by of the associated URL by 1.
+
+            //Record Click Event (that will be saved in click_events table in the database)
+            ClickEvent clickEvent = new ClickEvent();       //We need to create a new ClickEvent object to record the click event. This ClickEvent object will be saved in the click_events table in the database.
+            clickEvent.setClickDate(LocalDateTime.now());   //The click_events table has 2 fields, clickDate and urlMapping. clickDate is the date and time when the click event occurred, and urlMapping is the UrlMapping object associated with the click event.
+            clickEvent.setUrlMapping(urlMapping);
+            clickEventRepository.save(clickEvent);         //We need to save the ClickEvent object in the database. This will be used for analytics purpose.
+        }
+        return urlMapping;      //Then we return the UrlMapping object associated with the shortUrl to the 'redirect()' method in RedirectController..
     }
 }

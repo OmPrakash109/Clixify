@@ -10,7 +10,8 @@ Clixify/
 │   │       │   
 │   │       │   ├── controller/                     # REST Controllers
 │   │       │   │   ├── AuthController.java         # Handles user authentication
-│   │       │   │   ├── UrlMappingController.java   # Handles URL operations and analytics
+│   │       │   │   ├── UrlMappingController.java   # Handles URL operations
+│   │       │   │   ├── RedirectController.java     # Handles short URL redirection
 │   │       │   │   └── controller_methods_notes__backend-flow  # Controller documentation
 │   │       │
 │   │       │   ├── dtos/                           # Data Transfer Objects
@@ -38,17 +39,22 @@ Clixify/
 │   │       │   │   │   ├── JwtAuthenticationResponse.java # Auth response DTO
 │   │       │   │   │   └── JwtUtils.java          # JWT token utilities
 │   │       │   │   │
-│   │       │   │   ├── WebSecurityConfig.java     # Security configuration
+│   │       │   │   ├── UserDetailsImpl.java        # Custom UserDetails implementation
+│   │       │   │   ├── UserDetailsServiceImpl.java # Custom UserDetailsService
+│   │       │   │   ├── WebSecurityConfig.java      # Security configuration
 │   │       │   │   ├── Authentication_Authorization_Guide.md  # Auth documentation
-│   │       │   │   └── security_package_note      # Security documentation
+│   │       │   │   └── security_package_note       # Security documentation
 │   │       │
 │   │       │   └── service/                       # Business logic
+│   │       │       ├── impl/                      # Service implementations
+│   │       │       │   └── UserDetailsServiceImpl.java
 │   │       │       ├── UrlMappingService.java     # URL operations logic
 │   │       │       ├── UserService.java           # User operations logic
 │   │       │       └── service_package_notes      # Service layer documentation
 │   │       │
 │   │       └── resources/
-│   │           └── application.properties         # Application configuration
+│   │           ├── application.properties         # Application configuration
+│   │           └── application-dev.properties     # Development configuration
 │   │
 │   └── target/                                    # Compiled classes and resources
 │
@@ -66,24 +72,33 @@ Key Components:
    - JWT-based stateless authentication
    - Role-based access control (USER, ADMIN)
    - Secure password hashing with BCrypt
+   - Custom UserDetails implementation
 
-2. URL Shortening:
-   - Generates unique short codes
-   - Tracks click analytics
-   - Handles URL validation
+2. URL Management:
+   - Short URL generation and redirection
+   - Click tracking and analytics
+   - URL validation and normalization
+   - User-specific URL management
 
 3. Analytics:
-   - Tracks click events with timestamps
-   - Provides click statistics by date
-   - Supports filtering by date range
+   - Real-time click event tracking
+   - Date-based analytics
+   - Per-URL and user-wide statistics
+   - Click count aggregation
 
 4. Security:
    - CSRF protection
    - CORS configuration
    - Input validation
    - Secure password handling
+   - JWT token validation
 
 5. Data Model:
    - User: Manages user accounts and authentication
-   - UrlMapping: Stores URL shortening mappings
-   - ClickEvent: Tracks analytics data
+   - UrlMapping: Stores URL shortening mappings and metadata
+   - ClickEvent: Tracks detailed analytics data
+
+6. API Endpoints:
+   - /api/auth/** - Authentication endpoints
+   - /api/url/** - URL management endpoints
+   - /{shortUrl} - URL redirection endpoint

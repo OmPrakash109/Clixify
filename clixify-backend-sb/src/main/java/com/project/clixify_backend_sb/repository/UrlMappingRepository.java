@@ -12,7 +12,8 @@ import java.util.List;
 public interface UrlMappingRepository extends JpaRepository<UrlMapping, Long>   //Extending JpaRepository interface to perform database operations. And as this Repository interface for UrlMapping entity, it will perform database operations for UrlMapping entity.
 {
     //METHOD NAME CONVENTION: findBy + Field Name
-    UrlMapping findByShortUrl(String shortUrl);     //To fetch the UserMapping object from database with the help of their short URL. This is used in the getClickEventByDate method of UrlMappingService to get the list of ClickEvent objects associated with the UrlMapping object.
+    UrlMapping findByShortUrl(String shortUrl);     //To fetch the UrlMapping object from database with the help of their short URL, this UrlMapping object contains the original URL as well, so we call this method (through urlMappingRepository object which was injected) in UrlMappingService's getOriginalUrl(String shortUrl) method,
+                                                    // which inturn is called in RedirectController class for fetching the Original URL mapped to passed short URL, and this findByShortUrl(String shortUrl) method returns an object of 'UrlMapping', from which we extract the original URL in RestController's redirect() method and then pass the original in HttpHeaders and thus user gets redirected to Original URL, when it hits the short URL.
     List<UrlMapping> findByUser(User usr);      //To get the all the URL mappings of a particular user from the database.
     //JPA will take care of the rest and will generate the query to fetch the record from the database.
 }
